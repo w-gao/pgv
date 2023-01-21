@@ -1,0 +1,28 @@
+{
+  "name": "pgv",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "description": "a web-based, interactive pangenome visualization tool",
+  "repository": "git@github.com:w-gao/pgv.git",
+  "author": "William Gao <wlgao@ucsc.edu>",
+  "license": "MIT",
+  "scripts": {
+    "ui:dev": "yarn workspace @pgv/ui dev",
+    "core:dev": "yarn workspace @pgv/core dev",
+    "lint": "eslint 'packages/**/{src,__tests__}/**/*.{js,jsx,ts,tsx}'",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
+    "eslint": "^8.32.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.3",
+    "vitest": "^0.27.3"
+  }
+}
