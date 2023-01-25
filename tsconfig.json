@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "packages",
     "lib": [
       "ESNext"
     ],
@@ -14,7 +15,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
+    "paths": {
+      "@pgv/core/*": [ "core/dist/*" ]
+    }
   },
+  "references": [
+    { "path": "./packages/core" }
+  ],
   "exclude": [
     "node_modules"
   ]
