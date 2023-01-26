@@ -10,7 +10,7 @@
   "author": "William Gao <wlgao@ucsc.edu>",
   "license": "MIT",
   "scripts": {
-    "ui:dev": "yarn workspace @pgv/ui dev",
+    "web:dev": "yarn workspace @pgv/web dev",
     "core:dev": "yarn workspace @pgv/core dev",
     "lint": "eslint 'packages/**/{src,__tests__}/**/*.{js,jsx,ts,tsx}'",
     "test": "vitest",

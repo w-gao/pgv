@@ -56,9 +56,9 @@ type Path = {
 }
 
 type Graph = {
-    node: Node[]
-    edge: Edge[]
-    path: Path[]
+    nodes: Node[]
+    edges: Edge[]
+    paths: Path[]
 }
 
 type Read = {

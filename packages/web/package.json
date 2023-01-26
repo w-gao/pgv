@@ -1,5 +1,5 @@
 {
-  "name": "@pgv/ui",
+  "name": "@pgv/web",
   "version": "0.0.1",
   "type": "module",
   "scripts": {
