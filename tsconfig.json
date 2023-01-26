@@ -14,10 +14,7 @@
     "skipLibCheck": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "paths": {
-      "@pgv/core/*": [ "core/dist/*" ]
-    }
+    "noImplicitReturns": true
   },
   "references": [
     { "path": "./packages/core" }

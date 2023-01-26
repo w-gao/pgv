@@ -1,4 +1,5 @@
-import { Header } from "./ui/components";
+import { ExampleDataRepo } from "./repo/local"
+import { Header } from "./ui/components"
 
 export type Config = {}
 
@@ -23,5 +24,17 @@ export class PGV {
 
         const header = new Header(root)
         header.show()
+
+        this.config
+
+        const repo = new ExampleDataRepo()
+
+        console.log("getting graphs...")
+
+        repo.getGraphDescs()
+            .then(desc => repo.downloadGraph(desc[0].identifier))
+            .then(graph => {
+                console.log(graph)
+            })
     }
 }

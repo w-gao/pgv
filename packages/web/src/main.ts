@@ -6,8 +6,11 @@ import "./style.css"
  */
 ;(function () {
     const root = document.querySelector<HTMLDivElement>("#app")
-    if (root) {
-        const app = new PGV(root)
-        console.log(app)
+    if (root === null) {
+        alert("cannot start app: missing container")
+        return
     }
+
+    const app = new PGV(root)
+    console.log(app)
 })()

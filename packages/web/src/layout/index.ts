@@ -1,4 +1,4 @@
-import { PGVGraph } from "@pgv/core/model/pgv"
+import { PGVGraph } from "@pgv/core/src/model/pgv"
 
 /**
  * An interface for the graph layout algorithm.

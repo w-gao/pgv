@@ -1,5 +1,5 @@
-import { PGVEdge, PGVNode } from "@pgv/core/model/pgv"
-import { Path } from "@pgv/core/model/vg"
+import { PGVEdge, PGVNode } from "@pgv/core/src/model/pgv"
+import { Path } from "@pgv/core/src/model/vg"
 
 /**
  * An interface for the renderer.

@@ -9,17 +9,17 @@
  * in the JSON output. For our purpose, the type doesn't matter as long as it's
  * unique.
  */
-type NodeId = number | string
+export type NodeId = number | string
 
 // Represents a node that stores a sequence.
-type Node = {
+export type Node = {
     id: NodeId
     name?: string
     sequence: string
 }
 
 // Represents an edge connecting two nodes.
-type Edge = {
+export type Edge = {
     from: NodeId
     to: NodeId
 
@@ -31,7 +31,7 @@ type Edge = {
 }
 
 // Represents a mapping in a path.
-type Mapping = {
+export type Mapping = {
     position: {
         nodeId: NodeId
         offset?: number
@@ -48,24 +48,22 @@ type Mapping = {
     rank: number | string
 }
 
-type Path = {
+export type Path = {
     name: string
     mapping: Mapping[]
     freq?: number
     indexOfFirstBase?: number
 }
 
-type Graph = {
+export type Graph = {
     nodes: Node[]
     edges: Edge[]
     paths: Path[]
 }
 
-type Read = {
+export type Read = {
     sequence: string
     path: Path
     score: number
     identity: number
 }
-
-export { NodeId, Node, Edge, Mapping, Path, Graph, Read }
