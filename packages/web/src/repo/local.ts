@@ -24,8 +24,8 @@ export class ExampleDataRepo implements IRepo {
         this.graphs.set("tiny", "data/tiny.vg.json")
     }
 
-    connect(): string | null {
-        return null
+    async connect(): Promise<string | null> {
+        return "local"
     }
 
     getGraphDescs(): Promise<GraphDesc[]> {

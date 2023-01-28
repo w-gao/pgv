@@ -41,7 +41,7 @@ export interface IRepo {
      *
      * If the connection failed, null should be returned.
      */
-    connect(): string | null
+    connect(): Promise<string | null>
 
     /**
      * Return a list of graph descriptions available in this repo.
@@ -56,6 +56,6 @@ export interface IRepo {
      */
     downloadGraph(
         identifier: string,
-        config: DownloadGraphConfig
+        // config: DownloadGraphConfig
     ): Promise<Graph | null>
 }

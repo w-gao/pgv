@@ -1,3 +1,4 @@
+import { IRenderer } from "./renderer"
 import { IRepo } from "./repo"
 import { ExampleDataRepo } from "./repo/local"
 import { Header } from "./ui/components"
@@ -34,7 +35,7 @@ export class PGV {
     /**
      * A list of available data sources.
      */
-    readonly repos: Map<string, IRepo>
+    private readonly repos: Map<string, IRepo>
 
     /**
      * The currently active repo.
@@ -43,6 +44,8 @@ export class PGV {
 
     readonly headerUI: Header
     // readonly renderUI:
+
+    renderer?: IRenderer
 
     constructor(root: HTMLElement, config?: Config) {
         // process config
@@ -60,13 +63,6 @@ export class PGV {
             this.repos.set(repoConfig.id, repo)
         }
 
-        // const repo = new ExampleDataRepo()
-        // repo.getGraphDescs()
-        //     .then(desc => repo.downloadGraph(desc[0].identifier))
-        //     .then(graph => {
-        //         console.log(graph)
-        //     })
-
         // inject UI components
         this.headerUI = new Header(this, root)
         this.headerUI.show()
@@ -76,23 +72,19 @@ export class PGV {
      * Switch the current repo.
      *
      * @param key The string identifier of the repo.
-     * @returns Status.
      */
-    switchRepo(key: string): boolean {
+    async switchRepo(key: string): Promise<IRepo> {
         if (this.currentRepo !== undefined) {
             // this.currentRepo.disconnect()
         }
 
         let repo = this.repos.get(key)
         if (!repo) {
-            return false
+            return Promise.reject("weird... repo is gone")
         }
 
-        // Maybe this should be async?
-        repo.connect()
-
+        await repo.connect()
         this.currentRepo = repo
-
-        return true
+        return repo
     }
 }

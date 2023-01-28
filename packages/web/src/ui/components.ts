@@ -81,7 +81,6 @@ function replaceFormGroupSelect(
         option.innerHTML = entry.name
         select.appendChild(option)
     }
-
 }
 
 export class Header {
@@ -116,26 +115,32 @@ export class Header {
 
     changeSource(src: string) {
         console.log("changing source to " + src)
-        this.app.switchRepo(src)
 
-        let repo = this.app.currentRepo!
-        repo.getGraphDescs().then(descs => {
-            console.log(descs)
+        this.app
+            .switchRepo(src)
+            .then(repo => repo.getGraphDescs())
+            .then(descs => {
+                console.log(descs)
 
-            const graphs = []
-            for (let desc of descs) {
-                graphs.push({
-                    id: desc.identifier,
-                    name: desc.name + "; " + src,
-                })
-            }
+                const graphs = []
+                for (let desc of descs) {
+                    graphs.push({
+                        id: desc.identifier,
+                        name: desc.name + "; " + src,
+                    })
+                }
 
-            replaceFormGroupSelect(this.vgFileElement, graphs, true)
-        })
+                // TODO: show a spinner and freeze UI?
+                replaceFormGroupSelect(this.vgFileElement, graphs, true)
+            })
     }
 
     selectVgGraph(graph: string) {
         console.log("selected graph: " + graph)
+
+        this.app.currentRepo!.downloadGraph(graph).then(g => {
+            console.log("graph:", g)
+        })
     }
 
     show() {
