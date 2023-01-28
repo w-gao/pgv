@@ -11,6 +11,19 @@ import "./style.css"
         return
     }
 
-    const app = new PGV(root)
+    const app = new PGV(root, {
+        repos: [
+            {
+                type: "demo",
+                id: "demo0",
+                name: "local demo [offline]",
+            },
+            {
+                type: "api",
+                id: "demo1",
+                name: "local server",
+            },
+        ],
+    })
     console.log(app)
 })()

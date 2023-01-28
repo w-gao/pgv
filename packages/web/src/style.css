@@ -16,3 +16,41 @@ body {
   max-width: 2000px;
   background: #eeefee;
 }
+
+.alert {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 10px 20px;
+  background: #ffb1b1;
+  border: 1px rgb(255, 137, 10) solid;
+  border-radius: 3px;
+}
+
+.alert__close {
+  cursor: pointer;
+}
+
+.header {
+  margin: 0;
+  padding: 5px 10px;
+  border: 1px #929292 solid;
+  border-radius: 3px;
+  background: #f6f6f6;
+}
+
+.form-group {
+  display: flex;
+  margin: 5px 0;
+}
+
+.form-group > select {
+  width: 200px;
+  height: 25px;
+  border: 1px #929292 solid;
+  border-radius: 3px;
+}
+
+.form-group > label {
+  width: 100px;
+}
