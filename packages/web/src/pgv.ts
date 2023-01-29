@@ -1,4 +1,8 @@
+import { PGVGraph } from "@pgv/core/src/model/pgv"
+import { ILayout } from "./layout"
+import { DagreLayout } from "./layout/dagre"
 import { IRenderer } from "./renderer"
+import { ThreeRenderer } from "./renderer/three"
 import { IRepo } from "./repo"
 import { ExampleDataRepo } from "./repo/local"
 import { Header } from "./ui/components"
@@ -45,7 +49,8 @@ export class PGV {
     readonly headerUI: Header
     // readonly renderUI:
 
-    renderer?: IRenderer
+    layout: ILayout
+    renderer: IRenderer
 
     constructor(root: HTMLElement, config?: Config) {
         // process config
@@ -58,7 +63,7 @@ export class PGV {
             switch (repoConfig.type) {
                 case "demo":
                 default:
-                    repo = new ExampleDataRepo()
+                    repo = new ExampleDataRepo(repoConfig.name)
             }
             this.repos.set(repoConfig.id, repo)
         }
@@ -66,6 +71,9 @@ export class PGV {
         // inject UI components
         this.headerUI = new Header(this, root)
         this.headerUI.show()
+
+        this.layout = new DagreLayout()
+        this.renderer = new ThreeRenderer()
     }
 
     /**
@@ -86,5 +94,11 @@ export class PGV {
         await repo.connect()
         this.currentRepo = repo
         return repo
+    }
+
+    render(graph: PGVGraph) {
+        this.layout.apply(graph)
+
+        this.renderer.drawGraph(graph.nodes, graph.edges, graph.paths)
     }
 }

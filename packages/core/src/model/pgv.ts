@@ -16,7 +16,7 @@ export type PGVNode = Node & { position: Position; length: number }
 export type PGVEdge = Edge
 
 export type PGVGraph = {
-    node: PGVNode[]
-    edge: PGVEdge[]
-    path: Path[]
+    nodes: PGVNode[]
+    edges: PGVEdge[]
+    paths: Path[]
 }

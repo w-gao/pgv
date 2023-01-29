@@ -14,7 +14,7 @@ export interface IRenderer {
      *                 can be used to influence the graph layout. The
      *                 paths should not be drawn.
      */
-    drawGraph(nodes: PGVNode, edges: PGVEdge, refPaths: Path[]): void
+    drawGraph(nodes: PGVNode[], edges: PGVEdge[], refPaths: Path[]): void
 
     drawPaths(p: Path[]): void
 }

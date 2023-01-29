@@ -12,8 +12,8 @@ export class ExampleDataRepo implements IRepo {
     private descs: GraphDesc[] = []
     private graphs: Map<string, string> = new Map()
 
-    constructor() {
-        this.displayName = "demo [offline]"
+    constructor(displayName: string) {
+        this.displayName = displayName
         this.supportsUpload = false
 
         this.descs.push({
@@ -28,34 +28,26 @@ export class ExampleDataRepo implements IRepo {
         return "local"
     }
 
-    getGraphDescs(): Promise<GraphDesc[]> {
-        return new Promise(resolve => {
-            resolve(this.descs)
-        })
+    async getGraphDescs(): Promise<GraphDesc[]> {
+        return this.descs
     }
 
-    downloadGraph(
+    async downloadGraph(
         identifier: string,
         // config: DownloadGraphConfig
     ): Promise<Graph | null> {
-        return (
-            new Promise<string>((resolve, reject) => {
-                const url = this.graphs.get(identifier)
-                if (url === undefined) {
-                    return reject()
-                }
+        const url = this.graphs.get(identifier)
 
-                resolve(url)
-            })
+        if (url === undefined) {
+            return Promise.reject()
+        }
 
-                // fetch from URL
-                .then(url => fetch(url))
+        // fetch from URL
+        let data = await fetch(url)
 
-                // convert to JSON
-                .then(url => url.json())
+        // convert to JSON
+        let obj = await data.json()
 
-                // parse it
-                .then(graph => parseGraph(graph))
-        )
+        return parseGraph(obj)
     }
 }
