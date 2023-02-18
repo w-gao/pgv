@@ -1,6 +1,6 @@
 import { PGVGraph } from "@pgv/core/src/model/pgv"
 import { ILayout } from "./layout"
-import { DagreLayout } from "./layout/dagre"
+import { TubeMapLayout } from "./layout/tubemap"
 import { IRenderer } from "./renderer"
 import { ThreeRenderer } from "./renderer/three"
 import { IRepo } from "./repo"
@@ -72,7 +72,7 @@ export class PGV {
         this.headerUI = new Header(this, root)
         this.headerUI.show()
 
-        this.layout = new DagreLayout()
+        this.layout = new TubeMapLayout()
         this.renderer = new ThreeRenderer()
     }
 
