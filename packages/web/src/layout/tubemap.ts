@@ -131,7 +131,7 @@ export class TubeMapLayout implements ILayout {
         })
 
         console.log("layout")
-        console.log(layout)
+        console.log(JSON.stringify(layout, undefined, 4))
     }
 
     apply(g: PGVGraph): void {

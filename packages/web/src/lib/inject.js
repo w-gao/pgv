@@ -2,6 +2,8 @@
 // This portion of code is injected by pgv.
 
 export function createLayout(params) {
+    // An actual DOM element is needed to calculate the pixel width, but we
+    // can hide the SVG if we don't want to display it.
     svgID = params.svgID
     svg = d3.select(params.svgID)
     inputNodes = JSON.parse(JSON.stringify(params.nodes)) // deep copy
@@ -148,6 +150,8 @@ export function generateLayout() {
             seq: obj.seq,
             x: obj.x,
             y: obj.y,
+            width: obj.pixelWidth + 40,
+            height: obj.contentHeight,
         })
     }
 
