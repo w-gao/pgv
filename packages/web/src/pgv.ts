@@ -47,7 +47,6 @@ export class PGV {
     currentRepo?: IRepo
 
     readonly headerUI: Header
-    // readonly renderUI:
 
     layout: ILayout
     renderer: IRenderer
@@ -73,7 +72,7 @@ export class PGV {
         this.headerUI.show()
 
         this.layout = new TubeMapLayout()
-        this.renderer = new ThreeRenderer()
+        this.renderer = new ThreeRenderer(root)
     }
 
     /**
