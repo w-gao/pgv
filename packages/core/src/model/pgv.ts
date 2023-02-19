@@ -4,15 +4,16 @@
 
 import { Node, Edge, Path } from "./vg"
 
-type Position = {
-    x: number
-    y: number
-}
-
 /**
  * Extension of vg structures to include coordinate info.
  */
-export type PGVNode = Node & { position: Position; length: number }
+export type PGVNode = Node & {
+    x: number
+    y: number
+    width: number
+    height: number
+}
+
 export type PGVEdge = Edge
 
 export type PGVGraph = {

@@ -1,3 +1,4 @@
+import { Graph } from "@pgv/core/src/model/vg"
 import { PGVGraph } from "@pgv/core/src/model/pgv"
 
 /**
@@ -7,5 +8,5 @@ export interface ILayout {
     name: string
 
     // Apply layout to the input graph.
-    apply(g: PGVGraph): void
+    apply(g: Graph): PGVGraph
 }

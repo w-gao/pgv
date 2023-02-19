@@ -84,6 +84,10 @@ export class ThreeRenderer implements IRenderer {
     }
 
     drawGraph(nodes: PGVNode[], edges: Edge[], refPaths: Path[]): void {
+
+        console.log("draw:")
+        console.log(nodes)
+
         throw new Error("Method not implemented.")
     }
 

@@ -1,4 +1,4 @@
-import { PGVGraph } from "@pgv/core/src/model/pgv"
+import { Graph } from "@pgv/core/src/model/vg"
 import { ILayout } from "./layout"
 import { TubeMapLayout } from "./layout/tubemap"
 import { IRenderer } from "./renderer"
@@ -95,9 +95,8 @@ export class PGV {
         return repo
     }
 
-    render(graph: PGVGraph) {
-        this.layout.apply(graph)
-
-        this.renderer.drawGraph(graph.nodes, graph.edges, graph.paths)
+    render(graph: Graph) {
+        const g = this.layout.apply(graph)
+        this.renderer.drawGraph(g.nodes, g.edges, g.paths)
     }
 }

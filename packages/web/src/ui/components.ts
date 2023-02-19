@@ -35,6 +35,12 @@ function createFormGroupSelect(
         option.selected = true
         option.innerHTML = " - select - "
         select.appendChild(option)
+    } else {
+        // Invoke the callback for the first element.
+        if (onSelect) {
+            let id = options[0].id
+            onSelect(id)
+        }
     }
 
     for (let entry of options) {
@@ -97,7 +103,7 @@ export class Header {
                 "repo",
                 "Data source",
                 app.config.repos || [],
-                true,
+                false,
                 this.changeSource.bind(this)
             )
         )
@@ -140,6 +146,9 @@ export class Header {
 
         this.app.currentRepo!.downloadGraph(graph).then(g => {
             console.log("graph:", g)
+            if (g !== null) {
+                this.app.render(g)
+            }
         })
     }
 
