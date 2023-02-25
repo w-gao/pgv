@@ -143,8 +143,8 @@ export class TubeMapLayout implements ILayout {
         const nodes = vgExtractNodes(g)
         const tracks = vgExtractTracks(g)
 
-        console.log(nodes)
-        console.log(tracks)
+        console.log("nodes:", nodes)
+        console.log("tracks:", tracks)
 
         const layout = createLayout({
             svgID: "#tubeMapSVG",
@@ -167,7 +167,7 @@ export class TubeMapLayout implements ILayout {
         // }
 
         for (let node of layout) {
-            console.log(node)
+            console.log("node:", node)
 
             // pgvNodes.push({
             //     id: node.name,

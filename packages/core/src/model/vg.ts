@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 /**
  * Variation graph (vg) toolkit data structures.
  *
@@ -24,8 +26,8 @@ export type Edge = {
     to: NodeId
 
     // two flags to store the orientation of the edge.
-    fromStart?: boolean
-    toEnd?: boolean
+    from_start?: boolean
+    to_end?: boolean
 
     overlap?: number
 }
@@ -33,15 +35,15 @@ export type Edge = {
 // Represents a mapping in a path.
 export type Mapping = {
     position: {
-        nodeId: NodeId
+        node_id: NodeId
         offset?: number
-        isReverse?: boolean
+        is_reverse?: boolean
     }
 
     // A collection of edits.
     edit: {
-        fromLength: number
-        toLength: number
+        from_length: number
+        to_length: number
         sequence?: string
     }[]
 
