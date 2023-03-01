@@ -152,7 +152,7 @@ export class TubeMapLayout implements ILayout {
             nodes: nodes,
             tracks: tracks,
         })!
-        console.log(layout)
+        // console.log(layout)
 
         const pgvNodes: PGVNode[] = []
 
@@ -167,16 +167,14 @@ export class TubeMapLayout implements ILayout {
         // }
 
         for (let node of layout) {
-            console.log("node:", node)
-
-            // pgvNodes.push({
-            //     id: node.name,
-            //     name: node.seq,
-            //     x: node.x,
-            //     y: node.y,
-            //     width: node.width,
-            //     height: node.height,
-            // })
+            pgvNodes.push({
+                id: node.name,
+                sequence: node.seq,
+                x: node.x,
+                y: node.y,
+                width: node.width,
+                height: node.height,
+            })
         }
 
         return {
