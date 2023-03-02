@@ -73,6 +73,13 @@ export class PGV {
 
         this.layout = new TubeMapLayout()
         this.renderer = new ThreeRenderer(root)
+
+        // TODO: we ought show spinner and hide UI when this is loading, but this is fairly quick at the moment.
+        if (this.renderer instanceof ThreeRenderer) {
+            this.renderer.loadResources().then(() => {
+                console.log("renderer loaded")
+            })
+        }
     }
 
     /**
@@ -101,6 +108,9 @@ export class PGV {
         const g = this.layout.apply(graph)
 
         // Render the graph.
-        this.renderer.drawGraph(g.nodes, g.edges, g.paths)
+        this.renderer.drawGraph(g.nodes, g.edges, undefined)
+
+        // Draw the paths.
+        // this.renderer.drawPaths(g.paths)
     }
 }
