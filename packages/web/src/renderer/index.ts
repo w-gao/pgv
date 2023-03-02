@@ -17,4 +17,9 @@ export interface IRenderer {
     drawGraph(nodes: PGVNode[], edges: PGVEdge[], refPaths: Path[]): void
 
     drawPaths(p: Path[]): void
+
+    /**
+     * Clear all rendered graphs.
+     */
+    clear(): void
 }
