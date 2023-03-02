@@ -2,6 +2,7 @@
 
 > A web-based, interactive pangenome visualization tool
 
+MVP
 
 - [ ] visualization of the graph itself from the nodes and edges (no haplotypes)
     - [X] layout
@@ -16,6 +17,8 @@
     - [ ] move graph with left, right arrow keys (simulate window move)
     - [ ] select haplotypes with up, down arrow keys
 
+
+Backend
 
 - [ ] server (likely out of scope)
     - [ ] hook into tube-maps server
