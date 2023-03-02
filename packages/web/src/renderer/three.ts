@@ -4,13 +4,15 @@ import {
     Scene,
     WebGLRenderer,
     PerspectiveCamera,
-    BoxGeometry,
     ShapeGeometry,
     MeshBasicMaterial,
     Mesh,
     Color,
     PlaneGeometry,
     DoubleSide,
+    ShadowMaterial,
+    GridHelper,
+    Material,
 } from "three"
 import { FlyControls } from "three/examples/jsm/controls/FlyControls"
 import { Font, FontLoader } from "three/examples/jsm/loaders/FontLoader"
@@ -29,19 +31,21 @@ export class ThreeRenderer implements IRenderer {
 
         // Initialize THREE.js - set scene, camera, renderer, etc.
         this.scene = new Scene()
-        this.scene.background = new Color(1, 1, 1)
+        this.scene.background = new Color(0xffffff)
 
-        this.camera = new PerspectiveCamera(75, width / height, 0.1, 1000)
-        this.camera.position.z = 100
+        this.camera = new PerspectiveCamera(75, width / height, 1, 10000)
+        this.camera.position.set(100, -50, 100)
 
         this.renderer = new WebGLRenderer()
+        this.renderer.setPixelRatio(window.devicePixelRatio)
         this.renderer.setSize(width, height)
+        this.renderer.shadowMap.enabled = true
 
         const controls = new FlyControls(this.camera, this.renderer.domElement)
         controls.movementSpeed = 100
-        controls.rollSpeed = Math.PI / 24
-        controls.autoForward = false
-        controls.dragToLook = true
+        // controls.rollSpeed = Math.PI / 24
+        // controls.autoForward = false
+        // controls.dragToLook = true
 
         this.element = this.renderer.domElement
         this.element.setAttribute("class", "renderCanvas")
@@ -49,9 +53,10 @@ export class ThreeRenderer implements IRenderer {
         // Add canvas element to parent.
         parent.appendChild(this.element)
 
-        // Draw a little cube.
-        // const cube = this.addCube()
+        // Set up scene.
+        this.setUpScene()
 
+        // Set up render loop.
         const render = () => {
             this.renderer.render(this.scene, this.camera)
         }
@@ -60,9 +65,6 @@ export class ThreeRenderer implements IRenderer {
         // we get to render.
         const animate = () => {
             requestAnimationFrame(animate)
-
-            // cube.rotation.x += 0.01
-            // cube.rotation.y += 0.01
 
             controls.update(0.01)
 
@@ -85,7 +87,12 @@ export class ThreeRenderer implements IRenderer {
         animate()
     }
 
-    async loadResources(): Promise<void> {
+    /**
+     * Async function to initialize the renderer.
+     *
+     * Download assets, etc.
+     */
+    async initialize(): Promise<void> {
         const loader = new FontLoader()
         try {
             this.font = await loader.loadAsync(
@@ -96,17 +103,29 @@ export class ThreeRenderer implements IRenderer {
         }
     }
 
-    addCube() {
-        const geometry = new BoxGeometry()
-        const material = new MeshBasicMaterial({
-            color: 0x005500,
-            wireframe: true,
+    /**
+     * Set up the scene.
+     */
+    setUpScene(): void {
+        const planeGeometry = new PlaneGeometry(2000, 2000)
+        planeGeometry.rotateX(-Math.PI / 2)
+        const planeMaterial = new ShadowMaterial({
+            color: 0x000000,
+            opacity: 0.2,
         })
 
-        const cube = new Mesh(geometry, material)
-        this.scene.add(cube)
+        const plane = new Mesh(planeGeometry, planeMaterial)
+        plane.position.y = -200
+        plane.receiveShadow = true
+        this.scene.add(plane)
 
-        return cube
+        const helper = new GridHelper(2000, 100)
+        helper.position.y = -199
+        if (helper.material instanceof Material) {
+            helper.material.opacity = 0.25
+            helper.material.transparent = true
+        }
+        this.scene.add(helper)
     }
 
     drawGraph(nodes: PGVNode[], edges: Edge[], refPaths?: Path[]): void {
@@ -179,5 +198,7 @@ export class ThreeRenderer implements IRenderer {
         while (this.scene.children.length > 0) {
             this.scene.remove(this.scene.children[0])
         }
+
+        this.setUpScene()
     }
 }

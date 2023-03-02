@@ -4,21 +4,22 @@
 
 
 - [ ] visualization of the graph itself from the nodes and edges (no haplotypes)
-    - [ ] layout
-        - [ ] use tubemap as the layout engine
-    - [ ] nodes
-    - [ ] text for the sequence
+    - [X] layout
+        - [X] use tubemap as the layout engine
+    - [X] nodes
+    - [X] text for the sequence
     - [ ] edges (curves)
-- [ ] visualization of haplotypes on the z-axis
-    - [ ] should be simple to do if we can visualize the graph
+- [ ] visualization of haplotypes on the z-axis (paths)
+    - should be simple to do if we can visualize the graph
 - [ ] controls
-    - [ ] pan left and right
-    - [ ] select haplotypes
+    - [ ] better camera positioning
+    - [ ] move graph with left, right arrow keys (simulate window move)
+    - [ ] select haplotypes with up, down arrow keys
 
 
-- [ ] server
-    - [ ] take in vg and convert to xg
-    - [ ]
+- [ ] server (likely out of scope)
+    - [ ] hook into tube-maps server
+    - [ ] move window with arrow keys (actually dynamically download graph)
 
 
 ## vg notes

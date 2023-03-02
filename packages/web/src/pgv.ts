@@ -71,12 +71,12 @@ export class PGV {
         this.headerUI = new Header(this, root)
         this.headerUI.show()
 
-        this.layout = new TubeMapLayout()
+        this.layout = new TubeMapLayout(root)
         this.renderer = new ThreeRenderer(root)
 
         // TODO: we ought show spinner and hide UI when this is loading, but this is fairly quick at the moment.
         if (this.renderer instanceof ThreeRenderer) {
-            this.renderer.loadResources().then(() => {
+            this.renderer.initialize().then(() => {
                 console.log("renderer loaded")
             })
         }

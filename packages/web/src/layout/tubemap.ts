@@ -9,8 +9,19 @@ import { createLayout, vgExtractNodes, vgExtractTracks } from "../lib/tubemap"
 export class TubeMapLayout implements ILayout {
     name: string
 
-    constructor() {
+    constructor(parent: HTMLElement) {
         this.name = "tubemap"
+
+        const svgElement = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "svg"
+        )
+        svgElement.id = "tubeMapSVG"
+        svgElement.setAttribute(
+            "style",
+            "width: 100%; height: 200px; max-width: 2000px"
+        )
+        parent.appendChild(svgElement)
     }
 
     apply(g: Graph): PGVGraph {

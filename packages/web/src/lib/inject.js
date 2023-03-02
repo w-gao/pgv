@@ -146,12 +146,12 @@ export function generateLayout() {
     let rv = []
     for (let obj of dNodes) {
         rv.push({
-            id: parseInt(obj.name), // Convert name back to ID.
+            id: obj.name,
             seq: obj.seq,
             x: obj.x,
             y: obj.y,
             width: obj.width > 1 ? obj.pixelWidth : 9,
-            height: 10,
+            height: 9,
         })
     }
 
