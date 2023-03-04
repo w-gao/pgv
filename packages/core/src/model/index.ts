@@ -96,7 +96,7 @@ export function parseGraph(obj: any): Graph {
         }
 
         if (pathObj["indexOfFirstBase"] !== undefined) {
-            path.freq = pathObj["indexOfFirstBase"]
+            path.indexOfFirstBase = pathObj["indexOfFirstBase"]
         }
 
         paths.push(path)

@@ -89,7 +89,6 @@ export class PGV {
      */
     async switchRepo(key: string): Promise<IRepo> {
         if (this.currentRepo !== undefined) {
-            this.renderer.clear()
             // this.currentRepo.disconnect()
         }
 
@@ -104,6 +103,9 @@ export class PGV {
     }
 
     render(graph: Graph) {
+        // Clear whatever we might have.
+        this.renderer.clear()
+
         // Apply the layout.
         const g = this.layout.apply(graph)
 

@@ -20,8 +20,13 @@ export class ExampleDataRepo implements IRepo {
             name: "tiny example from vg",
             identifier: "tiny",
         })
-
         this.graphs.set("tiny", "data/tiny.vg.json")
+
+        this.descs.push({
+            name: "x.vg.xg",
+            identifier: "x.vg.xg",
+        })
+        this.graphs.set("x.vg.xg", "data/x.vg.xg.json")
     }
 
     async connect(): Promise<string | null> {

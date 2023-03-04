@@ -2,6 +2,9 @@
 
 > A web-based, interactive pangenome visualization tool
 
+![image](https://user-images.githubusercontent.com/20177171/222885647-7d64f1c6-8361-4bd2-8611-54921a566c32.png)
+
+
 MVP
 
 - [ ] visualization of the graph itself from the nodes and edges (no haplotypes)
@@ -9,13 +12,17 @@ MVP
         - [X] use tubemap as the layout engine
     - [X] nodes
     - [X] text for the sequence
-    - [ ] edges (curves)
+    - [X] edges (curves)
+        - [ ] improved curve calculation
 - [ ] visualization of haplotypes on the z-axis (paths)
     - should be simple to do if we can visualize the graph
 - [ ] controls
     - [ ] better camera positioning
     - [ ] move graph with left, right arrow keys (simulate window move)
     - [ ] select haplotypes with up, down arrow keys
+- [ ] interactivity
+    - [ ] display info on selected path
+    - [ ] hover nodes / edges should display some info
 
 
 Backend

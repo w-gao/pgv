@@ -268,6 +268,131 @@
           }
         ],
         "name": "x"
+      },
+      {
+        "mapping": [
+          {
+            "edit": [
+              {
+                "from_length": 8,
+                "to_length": 8
+              }
+            ],
+            "position": {
+              "node_id": "1"
+            },
+            "rank": "1"
+          },
+          {
+            "edit": [
+              {
+                "from_length": 1,
+                "to_length": 1
+              }
+            ],
+            "position": {
+              "node_id": "2"
+            },
+            "rank": "2"
+          },
+          {
+            "edit": [
+              {
+                "from_length": 1,
+                "to_length": 1
+              }
+            ],
+            "position": {
+              "node_id": "5"
+            },
+            "rank": "3"
+          },
+          {
+            "edit": [
+              {
+                "from_length": 3,
+                "to_length": 3
+              }
+            ],
+            "position": {
+              "node_id": "6"
+            },
+            "rank": "4"
+          },
+          {
+            "edit": [
+              {
+                "from_length": 1,
+                "to_length": 1
+              }
+            ],
+            "position": {
+              "node_id": "8"
+            },
+            "rank": "5"
+          },
+          {
+            "edit": [
+              {
+                "from_length": 19,
+                "to_length": 19
+              }
+            ],
+            "position": {
+              "node_id": "9"
+            },
+            "rank": "6"
+          },
+          {
+            "edit": [
+              {
+                "from_length": 1,
+                "to_length": 1
+              }
+            ],
+            "position": {
+              "node_id": "11"
+            },
+            "rank": "7"
+          },
+          {
+            "edit": [
+              {
+                "from_length": 4,
+                "to_length": 4
+              }
+            ],
+            "position": {
+              "node_id": "12"
+            },
+            "rank": "8"
+          },
+          {
+            "edit": [
+              {
+                "from_length": 1,
+                "to_length": 1
+              }
+            ],
+            "position": {
+              "node_id": "14"
+            },
+            "rank": "9"
+          },
+          {
+            "edit": [
+              {
+                "from_length": 11,
+                "to_length": 11
+              }
+            ],
+            "position": {
+              "node_id": "15"
+            },
+            "rank": "10"
+          }
+        ],
+        "name": "x2"
       }
     ]
 }
