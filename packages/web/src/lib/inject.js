@@ -120,9 +120,9 @@ export function generateLayout() {
         console.log("Lane assignment:")
         console.log(assignments)
     }
-    // getImageDimensions();
-    // alignSVG(nodes, tracks);
-    // defineSVGPatterns();
+    getImageDimensions();
+    alignSVG(nodes, tracks);
+    defineSVGPatterns();
 
     drawTrackRectangles(trackRectangles)
     drawTrackCurves()

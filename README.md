@@ -14,15 +14,18 @@ MVP
     - [X] text for the sequence
     - [X] edges (curves)
         - [ ] improved curve calculation
-- [ ] visualization of haplotypes on the z-axis (paths)
+- [X] visualization of haplotypes on the z-axis (paths)
     - should be simple to do if we can visualize the graph
 - [ ] controls
-    - [ ] better camera positioning
-    - [ ] move graph with left, right arrow keys (simulate window move)
-    - [ ] select haplotypes with up, down arrow keys
+    - [X] better camera positioning
+    - [X] move graph with left, right arrow keys (simulate window move)
+    - [X] select haplotypes with up, down arrow keys
 - [ ] interactivity
     - [ ] display info on selected path
     - [ ] hover nodes / edges should display some info
+- [ ] demo graphs
+    - [ ] find/generate better graphs to display different SVs
+    - [ ] take screenshots for paper
 
 
 Backend
