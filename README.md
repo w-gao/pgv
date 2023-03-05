@@ -2,7 +2,7 @@
 
 > A web-based, interactive pangenome visualization tool
 
-![image](https://user-images.githubusercontent.com/20177171/222885647-7d64f1c6-8361-4bd2-8611-54921a566c32.png)
+![image](https://user-images.githubusercontent.com/20177171/222947953-805d83d4-a556-41d8-963b-0124ba374898.gif)
 
 
 MVP
