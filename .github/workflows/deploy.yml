@@ -32,7 +32,7 @@ jobs:
       - name: Build core
         run: yarn workspace @pgv/core build
       - name: Build web
-        run: yarn workspace @pgv/web build
+        run: yarn workspace @pgv/web build --base /pgv
       - name: Upload production artifact
         uses: actions/upload-artifact@v3
         with:
