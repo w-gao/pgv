@@ -160,7 +160,7 @@ export class ThreeRenderer implements IRenderer {
         this.scene.add(light)
     }
 
-    drawGraph(nodes: PGVNode[], edges: Edge[], refPaths?: Path[]): void {
+    drawGraph(nodes: PGVNode[], edges: Edge[], _refPaths?: Path[]): void {
         this.active = true
 
         console.log("drawGraph()")
