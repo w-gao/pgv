@@ -2,15 +2,27 @@
 
 > A web-based, interactive pangenome visualization tool
 
+
+## Motivation
+
+A pangenome represents genetic variation in a population as a variation graph,
+which greatly reduces the reference bias that comes from using linear reference
+genomes. Although, it requires additional effort to work with variation graphs.
+`pgv` is a new tool built on top of previous work that attempts to make it more
+intuitive to visualize small structural variations in a variation graph.
+
+
+## Screenshots
+
 ![image](https://user-images.githubusercontent.com/20177171/222978845-a09b6fd6-fcfa-4e3a-a5e0-de6deab6324f.png)
 
 
-The _paths_ in a variation grpah can be interactively highlighted:
+- The _paths_ in a variation grpah can be interactively highlighted:
 
 ![image](https://user-images.githubusercontent.com/20177171/222947953-805d83d4-a556-41d8-963b-0124ba374898.gif)
 
 
-MVP
+## MVP checklist
 
 - [ ] visualization of the graph itself from the nodes and edges (no haplotypes)
     - [X] layout
