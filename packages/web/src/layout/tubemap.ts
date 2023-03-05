@@ -36,9 +36,9 @@ export class TubeMapLayout implements ILayout {
 
         const layout = createLayout({
             svgID: "#tubeMapSVG",
-            hideLegend: true,
             nodes: nodes,
             tracks: tracks,
+            region: [],
         })!
 
         const pgvNodes: PGVNode[] = []
