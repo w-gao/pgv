@@ -2,27 +2,32 @@ import { PGVNode, Edge, Path } from "@pgv/core/src/model"
 import { IRenderer } from "."
 import {
     Scene,
-    WebGLRenderer,
     PerspectiveCamera,
-    ShapeGeometry,
-    MeshBasicMaterial,
+    WebGLRenderer,
     Mesh,
     Color,
-    PlaneGeometry,
+    Clock,
     DoubleSide,
-    ShadowMaterial,
-    Line,
-    LineBasicMaterial,
-    BufferGeometry,
     Vector3,
-    CubicBezierCurve3,
     BoxGeometry,
-    AmbientLight,
-    SpotLight,
+    BufferGeometry,
+    ShapeGeometry,
+    LineBasicMaterial,
+    MeshBasicMaterial,
+    CubicBezierCurve3,
+    Line,
+    MeshPhongMaterial,
+    HemisphereLight,
+    PlaneGeometry,
+    MeshLambertMaterial,
+    Material,
 } from "three"
 import { FlyControls } from "three/examples/jsm/controls/FlyControls"
 import { Font, FontLoader } from "three/examples/jsm/loaders/FontLoader"
 
+/**
+ * Variation graph renderer using Three.js.
+ */
 export class ThreeRenderer implements IRenderer {
     private scene: Scene
     private camera: PerspectiveCamera
@@ -31,13 +36,23 @@ export class ThreeRenderer implements IRenderer {
 
     private font: Font | undefined
 
+    /**
+     * True if we are rendering a graph.
+     */
+    private active: boolean = false
+    private activePathIndex: number = -1
+    private nodeCoords: Map<string, [number, number, number, number]> =
+        new Map()
+    private pathNames: Array<string> = []
+    private pathMeshes: Map<string, Array<Mesh>> = new Map()
+
     constructor(parent: HTMLElement) {
         const width = parent.clientWidth
         const height = parent.clientHeight
 
         // Initialize THREE.js - set scene, camera, renderer, etc.
         this.scene = new Scene()
-        this.scene.background = new Color(0xffffff)
+        this.scene.background = new Color(0xfefefe)
 
         this.camera = new PerspectiveCamera(75, width / height, 1, 10000)
         this.camera.position.set(100, -50, 100)
@@ -49,9 +64,9 @@ export class ThreeRenderer implements IRenderer {
 
         const controls = new FlyControls(this.camera, this.renderer.domElement)
         controls.movementSpeed = 100
-        controls.rollSpeed = Math.PI / 24
+        controls.rollSpeed = 0
         controls.autoForward = false
-        controls.dragToLook = true
+        controls.dragToLook = false
 
         this.element = this.renderer.domElement
         this.element.setAttribute("class", "renderCanvas")
@@ -67,17 +82,19 @@ export class ThreeRenderer implements IRenderer {
             this.renderer.render(this.scene, this.camera)
         }
 
-        // Request animation frame from the browser - the browser twlls us when
+        const clock = new Clock(true)
+
+        // Request animation frame from the browser - the browser tells us when
         // we get to render.
         const animate = () => {
             requestAnimationFrame(animate)
 
-            controls.update(0.01)
+            controls.update(clock.getDelta())
 
             render()
         }
 
-        // Add an event listener for the resize event.
+        // Add event handler for resize event.
         const resize = () => {
             const width = parent.clientWidth
             const height = parent.clientHeight
@@ -113,59 +130,20 @@ export class ThreeRenderer implements IRenderer {
      * Set up the scene.
      */
     setUpScene(): void {
-        this.scene.add(new AmbientLight(0xf0f0f0))
+        // this.scene.add(new CameraHelper(this.camera))
 
-        const light = new SpotLight(0xffffff, 1.5)
-        light.position.set(0, 1500, 200)
-        light.angle = Math.PI * 0.2
-        light.castShadow = true
-        light.shadow.camera.near = 200
-        light.shadow.camera.far = 2000
-        light.shadow.bias = -0.000222
-        light.shadow.mapSize.width = 1024 * 3
-        light.shadow.mapSize.height = 1024 * 3
+        const light = new HemisphereLight(0xffffff, 0xe0e0e0, 1.1)
         this.scene.add(light)
-
-        const planeGeometry = new PlaneGeometry(10000, 200)
-        planeGeometry.rotateX(-Math.PI / 2)
-
-        // Shadow plane.
-        const shadowMaterial = new ShadowMaterial({
-            color: 0x0000e2,
-            opacity: 0.2,
-        })
-
-        const shadowPlane = new Mesh(planeGeometry, shadowMaterial)
-        shadowPlane.position.y = -200
-        shadowPlane.receiveShadow = true
-        this.scene.add(shadowPlane)
-
-        // Ground.
-        // const groundGeometry = new BoxGeometry(10000, 200, 4)
-        // const groundMaterial = new MeshBasicMaterial({
-        //     color: 0xffcccb,
-        // })
-        // const ground = new Mesh(groundGeometry, groundMaterial)
-        // ground.position.y = -200
-        // ground.receiveShadow = true
-        // this.scene.add(ground)
-
-        // Grid helper
-        // const helper = new GridHelper(2000, 100)
-        // helper.position.y = -199
-        // if (helper.material instanceof Material) {
-        //     helper.material.opacity = 0.25
-        //     helper.material.transparent = true
-        // }
-        // this.scene.add(helper)
     }
 
     drawGraph(nodes: PGVNode[], edges: Edge[], refPaths?: Path[]): void {
+        this.active = true
+
         console.log("drawGraph()")
         console.log(JSON.stringify(nodes, undefined, 4))
 
-        const nodeStarts = new Map()
-        const nodeEnds = new Map()
+        const nodeCoords = this.nodeCoords
+        nodeCoords.clear()
 
         // Draw nodes.
         for (let node of nodes) {
@@ -175,7 +153,7 @@ export class ThreeRenderer implements IRenderer {
             const width = node.width + 18 - node.width / 3
 
             const geometry = new BoxGeometry(width, node.height, 4)
-            const material = new MeshBasicMaterial({
+            const material = new MeshPhongMaterial({
                 color: 0xadd8e6,
                 // wireframe: true,
                 side: DoubleSide,
@@ -184,21 +162,15 @@ export class ThreeRenderer implements IRenderer {
             // Create mesh for node.
             const mesh = new Mesh(geometry, material)
             mesh.castShadow = true
-
             mesh.position.x = node.x + node.width / 2
             mesh.position.y = -node.y
 
             this.scene.add(mesh)
-
-            nodeStarts.set(node.id.toString(), [
-                mesh.position.x - width / 2,
+            nodeCoords.set(node.id.toString(), [
+                mesh.position.x,
                 mesh.position.y,
-                0,
-            ])
-            nodeEnds.set(node.id.toString(), [
-                mesh.position.x + width / 2,
-                mesh.position.y,
-                0,
+                width,
+                node.height,
             ])
 
             // Draw text.
@@ -234,7 +206,7 @@ export class ThreeRenderer implements IRenderer {
             edge.from = `${edge.from}`
             edge.to = `${edge.to}`
 
-            if (!nodeStarts.has(edge.from) || !nodeStarts.has(edge.to)) {
+            if (!this.nodeCoords.has(edge.from) || !nodeCoords.has(edge.to)) {
                 // Some nodes were collapsed and so this edge might have been removed.
                 console.log(`skipping edge: ${edge.from} -> ${edge.to}`)
                 continue
@@ -242,12 +214,14 @@ export class ThreeRenderer implements IRenderer {
 
             console.log(`drawing edge: ${edge.from} -> ${edge.to}`)
 
+            const [fromX, fromY, fromWidth] = nodeCoords.get(edge.from)!
             let from = edge.from_start
-                ? nodeStarts.get(edge.from)
-                : nodeEnds.get(edge.from)
+                ? [fromX - fromWidth / 2, fromY, 0]
+                : [fromX + fromWidth / 2, fromY, 0]
+            const [toX, toY, toWidth] = nodeCoords.get(edge.to)!
             let to = edge.to_end
-                ? nodeEnds.get(edge.to)
-                : nodeStarts.get(edge.to)
+                ? [toX + toWidth / 2, toY, 0]
+                : [toX - toWidth / 2, toY, 0]
 
             // Basic line
             // const lineGeometry = new BufferGeometry().setFromPoints([
@@ -264,6 +238,10 @@ export class ThreeRenderer implements IRenderer {
             let dist = to[0] - from[0]
             let yScale = dist / 7
 
+            if (edge.from_start || edge.to_end) {
+                yScale *= 1.4
+            }
+
             // Try to make curve in opposite direction if it's jumping over another node.
             // Doesn't always work but might avoid some overlapping.
             try {
@@ -274,6 +252,7 @@ export class ThreeRenderer implements IRenderer {
             } catch (err) {
                 // never mind.
             }
+
             const curve = new CubicBezierCurve3(
                 new Vector3(...from),
                 new Vector3(from[0] + 5, from[1] + 5 + yScale, from[2]),
@@ -308,15 +287,85 @@ export class ThreeRenderer implements IRenderer {
         }
     }
 
-    drawPaths(p: Path[]): void {
-        throw new Error("Method not implemented.")
+    drawPaths(paths: Path[]): void {
+        let counter = 0
+        const color = new Color()
+        const nodeCoords = this.nodeCoords
+
+        for (let path of paths) {
+            const meshes = []
+            color.setHSL(counter / paths.length, 0.8, 0.5)
+
+            const mappings = path.mapping
+            for (let mapping of mappings) {
+                const node = `${mapping.position.node_id}`
+                if (!this.nodeCoords.has(node)) {
+                    continue
+                }
+
+                const [x, y, width, height] = nodeCoords.get(node)!
+
+                const geometry = new PlaneGeometry(width, height)
+                const material = new MeshLambertMaterial({
+                    color: new Color(color.r, color.g, color.b).getHex(),
+                    opacity: 0.1,
+                    transparent: true,
+                })
+
+                // Create mesh for node.
+                const mesh = new Mesh(geometry, material)
+                mesh.castShadow = true
+                mesh.position.x = x
+                mesh.position.y = y
+                mesh.position.z = 2 + counter / paths.length
+                this.scene.add(mesh)
+                meshes.push(mesh)
+            }
+
+            this.pathNames.push(path.name)
+            this.pathMeshes.set(path.name, meshes)
+            counter++
+        }
+
+        this.setActivePath(0)
     }
 
     clear(): void {
+        this.active = false
+        this.activePathIndex = -1
+        this.nodeCoords.clear()
+        this.pathNames = []
+        this.pathMeshes.clear()
+
         while (this.scene.children.length > 0) {
             this.scene.remove(this.scene.children[0])
         }
 
         this.setUpScene()
+    }
+
+    setActivePath(index: number): void {
+        if (this.activePathIndex !== -1) {
+            // Reset opacity of previous path.
+            const prevMeshes = this.pathMeshes.get(
+                this.pathNames[this.activePathIndex]
+            )!
+            for (let mesh of prevMeshes) {
+                if (mesh.material instanceof Material) {
+                    mesh.material.opacity = 0.1
+                }
+            }
+        }
+
+        // Change opacity of active path.
+        this.activePathIndex = index
+        const meshes = this.pathMeshes.get(
+            this.pathNames[this.activePathIndex]
+        )!
+        for (let mesh of meshes) {
+            if (mesh.material instanceof Material) {
+                mesh.material.opacity = 0.5
+            }
+        }
     }
 }

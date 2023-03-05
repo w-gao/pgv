@@ -113,6 +113,6 @@ export class PGV {
         this.renderer.drawGraph(g.nodes, g.edges, undefined)
 
         // Draw the paths.
-        // this.renderer.drawPaths(g.paths)
+        this.renderer.drawPaths(g.paths)
     }
 }
