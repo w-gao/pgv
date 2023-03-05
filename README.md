@@ -2,6 +2,11 @@
 
 > A web-based, interactive pangenome visualization tool
 
+![image](https://user-images.githubusercontent.com/20177171/222978845-a09b6fd6-fcfa-4e3a-a5e0-de6deab6324f.png)
+
+
+The _paths_ in a variation grpah can be interactively highlighted:
+
 ![image](https://user-images.githubusercontent.com/20177171/222947953-805d83d4-a556-41d8-963b-0124ba374898.gif)
 
 
