@@ -106,6 +106,29 @@ export class ThreeRenderer implements IRenderer {
         }
         window.addEventListener("resize", resize, false)
 
+        // Add event handler for keyboard event.
+        const keydown = (ev: KeyboardEvent) => {
+            // Only handle events if we have actually rendered a graph.
+            if (!this.active) {
+                return
+            }
+
+            switch (ev.key) {
+                case "ArrowUp":
+                    this.setActivePath(
+                        (this.activePathIndex - 1) % this.pathNames.length
+                    )
+                    break
+                case "ArrowDown":
+                    this.setActivePath(
+                        (this.activePathIndex + 1) % this.pathNames.length
+                    )
+                    break
+            }
+        }
+
+        window.addEventListener("keydown", keydown, false)
+
         // Kick off our render loop.
         animate()
     }
