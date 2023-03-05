@@ -1,5 +1,6 @@
 import { PGVNode, Edge, Path } from "@pgv/core/src/model"
 import { IRenderer } from "."
+import { mod } from "../utils/math"
 import {
     Scene,
     PerspectiveCamera,
@@ -12,15 +13,15 @@ import {
     BoxGeometry,
     BufferGeometry,
     ShapeGeometry,
+    PlaneGeometry,
+    Material,
     LineBasicMaterial,
     MeshBasicMaterial,
-    CubicBezierCurve3,
-    Line,
-    MeshPhongMaterial,
-    HemisphereLight,
-    PlaneGeometry,
     MeshLambertMaterial,
-    Material,
+    MeshPhongMaterial,
+    Line,
+    HemisphereLight,
+    CubicBezierCurve3,
 } from "three"
 import { FlyControls } from "three/examples/jsm/controls/FlyControls"
 import { Font, FontLoader } from "three/examples/jsm/loaders/FontLoader"
@@ -116,12 +117,12 @@ export class ThreeRenderer implements IRenderer {
             switch (ev.key) {
                 case "ArrowUp":
                     this.setActivePath(
-                        (this.activePathIndex - 1) % this.pathNames.length
+                        mod(this.activePathIndex - 1, this.pathNames.length)
                     )
                     break
                 case "ArrowDown":
                     this.setActivePath(
-                        (this.activePathIndex + 1) % this.pathNames.length
+                        mod(this.activePathIndex + 1, this.pathNames.length)
                     )
                     break
             }
