@@ -247,17 +247,6 @@ export class ThreeRenderer implements IRenderer {
                 ? [toX + toWidth / 2, toY, 0]
                 : [toX - toWidth / 2, toY, 0]
 
-            // Basic line
-            // const lineGeometry = new BufferGeometry().setFromPoints([
-            //     new Vector3(...from),
-            //     new Vector3(...to),
-            // ])
-
-            // const lineMaterial = new LineBasicMaterial({
-            //     color: 0x0000ff,
-            //     opacity: 1,
-            // })
-
             // Bezier curve
             let dist = to[0] - from[0]
             let yScale = dist / 7
@@ -291,22 +280,7 @@ export class ThreeRenderer implements IRenderer {
                 opacity: 1,
             })
 
-            // Fat lines (doesn't work yet)
-            // const lineGeometry = new LineGeometry()
-            // lineGeometry.setPositions([...from, ...to])
-            // lineGeometry.setColors([0, 0, 0, 0, 0, 0])
-
-            // const lineMaterial = new LineMaterial({
-            //     color: 0xffffff,
-            //     linewidth: 0.05,
-            //     vertexColors: true,
-            //     dashed: true,
-            //     alphaToCoverage: true,
-            // })
-
             const line = new Line(lineGeometry, lineMaterial)
-            // line.computeLineDistances()
-            // line.scale.set(1, 1, 1)
             this.scene.add(line)
         }
     }
@@ -368,6 +342,9 @@ export class ThreeRenderer implements IRenderer {
         this.setUpScene()
     }
 
+    /**
+     * Select a path as the active one. This makes the path less transparent.
+     */
     setActivePath(index: number): void {
         if (this.activePathIndex !== -1) {
             // Reset opacity of previous path.
