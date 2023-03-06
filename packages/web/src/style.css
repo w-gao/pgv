@@ -57,7 +57,12 @@ body {
 
 .button-container {
   display: flex;
-  gap: 5px;
+  gap: 10px;
+}
+
+.button-container > button {
+  padding: 2px 5px;
+  width: 35px;
 }
 
 .renderCanvas {
