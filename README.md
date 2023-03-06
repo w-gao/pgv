@@ -2,6 +2,8 @@
 
 > A web-based, interactive pangenome visualization tool
 
+[![demo](https://github.com/w-gao/pgv/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/w-gao/pgv/actions/workflows/deploy.yml)
+
 
 ## Motivation
 
@@ -17,7 +19,7 @@ sequence graph itself on the x-y plane, and paths are rendered as separate layer
 
 ## Screenshots
 
-![image](https://user-images.githubusercontent.com/20177171/223033094-1ed5297b-28d3-4aa9-83ac-f04963f272e6.png)
+![image](https://user-images.githubusercontent.com/20177171/223041554-c0ff2beb-6a92-4d70-bbf7-1916245ad959.png)
 
 
 - The _paths_ in a variation grpah can be interactively selected/highlighted:
