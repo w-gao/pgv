@@ -13,6 +13,11 @@ export function createLayout(params) {
     bed = params.bed || null
     config.clickableNodesFlag = params.clickableNodes || false
     config.hideLegendFlag = params.hideLegend || false
+
+    // If tubemap merges nodes, we need a way to get the IDs of the merged node
+    // and update our edges. Until then, let's not merge nodes.
+    config.mergeNodesFlag = false
+
     return generateLayout()
 }
 
