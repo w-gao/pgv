@@ -41,6 +41,7 @@ sequence graph itself on the x-y plane, and paths are rendered as separate layer
     - [X] move graph with left, right arrow keys (simulate window move)
     - [X] select haplotypes with up, down arrow keys
 - [ ] interactivity
+    - [X] navigation buttons for mobile
     - [ ] display info on selected path
     - [ ] hover nodes / edges should display some info
 - [ ] demo graphs

@@ -55,6 +55,11 @@ body {
   width: 100px;
 }
 
+.button-container {
+  display: flex;
+  gap: 5px;
+}
+
 .renderCanvas {
   margin: 0;
   width: 100%;

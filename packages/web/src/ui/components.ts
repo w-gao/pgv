@@ -117,6 +117,41 @@ export class Header {
         )
         // this.vgFileElement.style.display = "none"
         this.element.appendChild(this.vgFileElement)
+
+        // Add navigation buttons
+        const buttonContainer = document.createElement("div")
+        buttonContainer.setAttribute("class", "button-container")
+
+        const leftButton = document.createElement("button")
+        leftButton.innerHTML = "<"
+        leftButton.addEventListener("click", () =>
+            this.handleButtonClick("KeyA")
+        )
+
+        const rightButton = document.createElement("button")
+        rightButton.innerHTML = ">"
+        rightButton.addEventListener("click", () =>
+            this.handleButtonClick("KeyD")
+        )
+
+        const upButton = document.createElement("button")
+        upButton.innerHTML = "^"
+        upButton.addEventListener("click", () =>
+            this.handleButtonClick("ArrowUp")
+        )
+
+        const downButton = document.createElement("button")
+        downButton.innerHTML = "v"
+        downButton.addEventListener("click", () =>
+            this.handleButtonClick("ArrowDown")
+        )
+
+        buttonContainer.appendChild(leftButton)
+        buttonContainer.appendChild(rightButton)
+        buttonContainer.appendChild(upButton)
+        buttonContainer.appendChild(downButton)
+
+        this.element.appendChild(buttonContainer)
     }
 
     changeSource(src: string) {
@@ -150,6 +185,13 @@ export class Header {
                 this.app.render(g)
             }
         })
+    }
+
+    handleButtonClick(code: string) {
+        window.dispatchEvent(new KeyboardEvent("keydown", { code: code }))
+        setTimeout(() => {
+            window.dispatchEvent(new KeyboardEvent("keyup", { code: code }))
+        }, 800)
     }
 
     show() {
