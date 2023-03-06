@@ -9,4 +9,7 @@ export interface ILayout {
 
     // Apply layout to the input graph.
     apply(g: Graph): PGVGraph
+
+    // If applicable, reset layout.
+    reset(): void
 }

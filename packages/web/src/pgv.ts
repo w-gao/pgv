@@ -31,6 +31,20 @@ function setDefaultOptions(config?: Config): Config {
 }
 
 /**
+ * Functional interface for UI callbacks.
+ */
+export interface CallbacksFn {
+    // Status bar related.
+    updateNodes(nodes: number | undefined, silent?: boolean): void
+    updateEdges(edges: number | undefined, silent?: boolean): void
+    updatePaths(paths: number | undefined, silent?: boolean): void
+    updateSelectedPath(path: string | undefined, silent?: boolean): void
+
+    // Force update.
+    updateStatusBar(): void
+}
+
+/**
  * Represents an instance of the PGV app.
  */
 export class PGV {
@@ -72,7 +86,7 @@ export class PGV {
         this.headerUI.show()
 
         this.layout = new TubeMapLayout(root)
-        this.renderer = new ThreeRenderer(root)
+        this.renderer = new ThreeRenderer(root, this.headerUI as CallbacksFn)
 
         // TODO: we ought show spinner and hide UI when this is loading, but this is fairly quick at the moment.
         if (this.renderer instanceof ThreeRenderer) {
@@ -89,6 +103,8 @@ export class PGV {
      */
     async switchRepo(key: string): Promise<IRepo> {
         if (this.currentRepo !== undefined) {
+            this.renderer.clear()
+            this.layout.reset()
             // this.currentRepo.disconnect()
         }
 

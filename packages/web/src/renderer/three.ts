@@ -25,6 +25,7 @@ import {
 } from "three"
 import { FlyControls } from "three/examples/jsm/controls/FlyControls"
 import { Font, FontLoader } from "three/examples/jsm/loaders/FontLoader"
+import { CallbacksFn } from "../pgv"
 
 /**
  * Represent the coordinates and size of a node.
@@ -57,7 +58,7 @@ export class ThreeRenderer implements IRenderer {
     private pathNames: Array<string> = []
     private pathMeshes: Map<string, Array<Mesh>> = new Map()
 
-    constructor(parent: HTMLElement) {
+    constructor(parent: HTMLElement, private uiCallbackFn: CallbacksFn) {
         // Create canvas container.
         const divElement = document.createElement("div")
         divElement.setAttribute("style", "width: 100%; height: 500px")
@@ -198,6 +199,10 @@ export class ThreeRenderer implements IRenderer {
     drawGraph(nodes: PGVNode[], edges: Edge[], _refPaths?: Path[]): void {
         this.active = true
 
+        this.uiCallbackFn.updateNodes(nodes.length, false)
+        this.uiCallbackFn.updateEdges(edges.length, false)
+        this.uiCallbackFn.updateStatusBar()
+
         console.log("drawGraph()")
         console.log(JSON.stringify(nodes, undefined, 4))
 
@@ -321,6 +326,8 @@ export class ThreeRenderer implements IRenderer {
     }
 
     drawPaths(paths: Path[]): void {
+        this.uiCallbackFn.updatePaths(paths.length)
+
         let counter = 0
         const color = new Color()
         const nodeCoords = this.nodeCoords
@@ -370,6 +377,12 @@ export class ThreeRenderer implements IRenderer {
         this.pathNames = []
         this.pathMeshes.clear()
 
+        this.uiCallbackFn.updateNodes(undefined, false)
+        this.uiCallbackFn.updateEdges(undefined, false)
+        this.uiCallbackFn.updatePaths(undefined, false)
+        this.uiCallbackFn.updateSelectedPath(undefined, false)
+        this.uiCallbackFn.updateStatusBar()
+
         while (this.scene.children.length > 0) {
             this.scene.remove(this.scene.children[0])
         }
@@ -403,5 +416,7 @@ export class ThreeRenderer implements IRenderer {
                 mesh.material.opacity = 0.5
             }
         }
+
+        this.uiCallbackFn.updateSelectedPath(this.pathNames[index])
     }
 }

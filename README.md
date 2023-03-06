@@ -44,8 +44,7 @@ sequence graph itself on the x-y plane, and paths are rendered as separate layer
     - [X] select haplotypes with up, down arrow keys
 - [ ] interactivity
     - [X] navigation buttons for mobile
-    - [ ] display info on selected path
-    - [ ] hover nodes / edges should display some info
+    - [X] display number of nodes, edges, paths, selected path
 - [ ] demo graphs
     - [ ] find/generate better graphs to display different SVs
     - [ ] take screenshots for paper
@@ -60,7 +59,33 @@ Backend
 
 ## vg notes
 
-`vg chunk`
+
+```
+# Construct vg graph from a FASTA and VCF file (reference + variants).
+vg construct -r z.fa -v z.vcf.gz > z.vg
+
+
+# Get some basic stats on the graph.
+vg stats -z z.xg
+vg stats -N z.xg
+
+
+# Index the graph.
+vg index z.vg -x z.xg
+
+
+# Construct a subgraph given a region.
+vg chunk -x z.xg -g -c 20 -r 200 -T -b chunk -E regions.tsv > z.chunk.vg
+
+# Index and generate a DOT and JSON file for the subgraph.
+vg index z.chunk.vg -x z.chunk.xg 
+vg view -dnp z.chunk.xg | dot -Tsvg -o z.chunk.svg
+
+vg view -j z.chunk.xg | dot -Tsvg -o z.chunk.json
+```
+
+
+### Cactus example
 
 ```
 vg chunk -x cactus.xg -c 20 -r 24:27 | vg view -j - | jq . > cactus_r24\:27_c20.json

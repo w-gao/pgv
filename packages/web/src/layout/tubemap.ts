@@ -57,4 +57,11 @@ export class TubeMapLayout implements ILayout {
             paths: g.paths,
         }
     }
+
+    reset(): void {
+        const element = document.getElementById("tubeMapSVG")
+        if (element) {
+            element.innerHTML = ""
+        }
+    }
 }

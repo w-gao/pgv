@@ -55,6 +55,15 @@ body {
   width: 100px;
 }
 
+.status-bar {
+  font-size: 12px;
+}
+
+.status-bar > span {
+  margin: 0;
+  font-weight: bold;
+}
+
 .button-container {
   display: flex;
   gap: 10px;

@@ -1,4 +1,4 @@
-import { PGV } from "../pgv"
+import { CallbacksFn, PGV } from "../pgv"
 
 function createFormGroupSelect(
     id: string,
@@ -89,9 +89,15 @@ function replaceFormGroupSelect(
     }
 }
 
-export class Header {
+export class Header implements CallbacksFn {
     private element: HTMLDivElement
+    private statusBarElement: HTMLDivElement
     private vgFileElement: HTMLDivElement
+
+    private numNodes?: number
+    private numEdges?: number
+    private numPaths?: number
+    private selectedPath?: string
 
     constructor(private app: PGV, private parent: HTMLElement) {
         this.element = document.createElement("div")
@@ -154,6 +160,10 @@ export class Header {
         buttonContainer.appendChild(downButton)
 
         this.element.appendChild(buttonContainer)
+
+        this.statusBarElement = document.createElement("div")
+        this.statusBarElement.setAttribute("class", "status-bar")
+        buttonContainer.appendChild(this.statusBarElement)
     }
 
     changeSource(src: string) {
@@ -195,6 +205,58 @@ export class Header {
             window.dispatchEvent(new KeyboardEvent("keyup", { code: code }))
         }, 800)
     }
+
+    // CallbacksFn ---
+
+    updateNodes(nodes: number | undefined, silent?: boolean): void {
+        this.numNodes = nodes
+        if (!silent) {
+            this.updateStatusBar()
+        }
+    }
+
+    updateEdges(edges: number | undefined, silent?: boolean): void {
+        this.numEdges = edges
+        if (!silent) {
+            this.updateStatusBar()
+        }
+    }
+
+    updatePaths(paths: number | undefined, silent?: boolean): void {
+        this.numPaths = paths
+        if (!silent) {
+            this.updateStatusBar()
+        }
+    }
+
+    updateSelectedPath(path: string | undefined, silent?: boolean): void {
+        this.selectedPath = path
+        if (!silent) {
+            this.updateStatusBar()
+        }
+    }
+
+    updateStatusBar(): void {
+        let text = []
+
+        if (this.numNodes) {
+            text.push(`nodes: ${this.numNodes}`)
+        }
+        if (this.numEdges) {
+            text.push(`edges: ${this.numEdges}`)
+        }
+        if (this.numPaths) {
+            text.push(
+                `paths: ${this.numPaths}` +
+                    (this.selectedPath
+                        ? ` (selected: <span>${this.selectedPath}</span>)`
+                        : "")
+            )
+        }
+
+        this.statusBarElement.innerHTML = text.join(" | ")
+    }
+    // ---
 
     show() {
         this.parent.appendChild(this.element)
