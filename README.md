@@ -19,7 +19,7 @@ sequence graph itself on the x-y plane, and paths are rendered as separate layer
 
 ## Screenshots
 
-![image](https://user-images.githubusercontent.com/20177171/223041554-c0ff2beb-6a92-4d70-bbf7-1916245ad959.png)
+![image](https://user-images.githubusercontent.com/20177171/223253829-4691fe27-412e-4474-927e-9e246f777885.png)
 
 
 - The _paths_ in a variation grpah can be interactively selected/highlighted:
