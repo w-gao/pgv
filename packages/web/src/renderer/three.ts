@@ -48,8 +48,13 @@ export class ThreeRenderer implements IRenderer {
     private pathMeshes: Map<string, Array<Mesh>> = new Map()
 
     constructor(parent: HTMLElement) {
-        const width = parent.clientWidth
-        const height = parent.clientHeight
+        // Create canvas container.
+        const divElement = document.createElement("div")
+        divElement.setAttribute("style", "width: 100%; height: 500px")
+        parent.appendChild(divElement)
+
+        const width = divElement.clientWidth
+        const height = divElement.clientHeight
 
         // Initialize THREE.js - set scene, camera, renderer, etc.
         this.scene = new Scene()
@@ -63,6 +68,22 @@ export class ThreeRenderer implements IRenderer {
         this.renderer.setSize(width, height)
         this.renderer.shadowMap.enabled = true
 
+        const addEventListenerFn = this.renderer.domElement.addEventListener
+        this.renderer.domElement.addEventListener = (
+            type: any,
+            listener: any
+        ) => {
+            if (
+                type === "contextmenu" ||
+                type === "pointerdown" ||
+                type === "pointermove" ||
+                type === "pointerup"
+            ) {
+                return
+            }
+
+            addEventListenerFn(type, listener)
+        }
         const controls = new FlyControls(this.camera, this.renderer.domElement)
         controls.movementSpeed = 100
         controls.rollSpeed = 0
@@ -72,8 +93,8 @@ export class ThreeRenderer implements IRenderer {
         this.element = this.renderer.domElement
         this.element.setAttribute("class", "renderCanvas")
 
-        // Add canvas element to parent.
-        parent.appendChild(this.element)
+        // Add canvas element to container.
+        divElement.appendChild(this.element)
 
         // Set up scene.
         this.setUpScene()
@@ -97,8 +118,8 @@ export class ThreeRenderer implements IRenderer {
 
         // Add event handler for resize event.
         const resize = () => {
-            const width = parent.clientWidth
-            const height = parent.clientHeight
+            const width = divElement.offsetWidth
+            const height = divElement.offsetHeight
 
             this.camera.aspect = width / height
             this.camera.updateProjectionMatrix()
@@ -114,7 +135,7 @@ export class ThreeRenderer implements IRenderer {
                 return
             }
 
-            switch (ev.key) {
+            switch (ev.code) {
                 case "ArrowUp":
                     this.setActivePath(
                         mod(this.activePathIndex - 1, this.pathNames.length)
