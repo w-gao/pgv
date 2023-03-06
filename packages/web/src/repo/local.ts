@@ -27,6 +27,21 @@ export class ExampleDataRepo implements IRepo {
             identifier: "x.vg.xg",
         })
         this.graphs.set("x.vg.xg", "data/x.vg.xg.json")
+
+        this.descs.push({
+            name: "K-3138.xg",
+            identifier: "K-3138.xg",
+        })
+        this.graphs.set("K-3138.xg", "data/K-3138.json")
+
+        this.descs.push({
+            name: "snp1kg-BRCA1.chunked.xg",
+            identifier: "snp1kg-BRCA1.chunked.xg",
+        })
+        this.graphs.set(
+            "snp1kg-BRCA1.chunked.xg",
+            "data/snp1kg-BRCA1.chunked.json"
+        )
     }
 
     async connect(): Promise<string | null> {
