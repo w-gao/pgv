@@ -18,11 +18,11 @@ import "./style.css"
                 id: "demo0",
                 name: "local demo [offline]",
             },
-            {
-                type: "api",
-                id: "demo1",
-                name: "local server",
-            },
+            // {
+            //     type: "api",
+            //     id: "demo1",
+            //     name: "local server",
+            // },
         ],
     })
     console.log(app)

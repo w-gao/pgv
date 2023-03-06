@@ -27,6 +27,16 @@ import { FlyControls } from "three/examples/jsm/controls/FlyControls"
 import { Font, FontLoader } from "three/examples/jsm/loaders/FontLoader"
 
 /**
+ * Represent the coordinates and size of a node.
+ */
+type NodeCoord = {
+    x: number
+    y: number
+    width: number
+    height: number
+}
+
+/**
  * Variation graph renderer using Three.js.
  */
 export class ThreeRenderer implements IRenderer {
@@ -41,9 +51,9 @@ export class ThreeRenderer implements IRenderer {
      * True if we are rendering a graph.
      */
     private active: boolean = false
+
     private activePathIndex: number = -1
-    private nodeCoords: Map<string, [number, number, number, number]> =
-        new Map()
+    private nodeCoords: Map<string, NodeCoord> = new Map()
     private pathNames: Array<string> = []
     private pathMeshes: Map<string, Array<Mesh>> = new Map()
 
@@ -68,6 +78,7 @@ export class ThreeRenderer implements IRenderer {
         this.renderer.setSize(width, height)
         this.renderer.shadowMap.enabled = true
 
+        // Disable pointer events registered by FlyControls.
         const addEventListenerFn = this.renderer.domElement.addEventListener
         this.renderer.domElement.addEventListener = (
             type: any,
@@ -179,6 +190,9 @@ export class ThreeRenderer implements IRenderer {
 
         const light = new HemisphereLight(0xffffff, 0xe0e0e0, 1.1)
         this.scene.add(light)
+
+        // Reset camera position.
+        this.camera.position.set(100, -50, 100)
     }
 
     drawGraph(nodes: PGVNode[], edges: Edge[], _refPaths?: Path[]): void {
@@ -188,14 +202,17 @@ export class ThreeRenderer implements IRenderer {
         console.log(JSON.stringify(nodes, undefined, 4))
 
         const nodeCoords = this.nodeCoords
-        nodeCoords.clear()
 
         // Draw nodes.
         for (let node of nodes) {
             console.log("drawing node:", node.sequence)
 
+            node.x *= 0.75
+            node.width *= 0.75
+            node.height *= 1.2
+
             // Transform the width a bit to fit better with our font.
-            const width = node.width + 18 - node.width / 3
+            let width = node.width + 9 // + 18 - node.width / 3
 
             const geometry = new BoxGeometry(width, node.height, 4)
             const material = new MeshPhongMaterial({
@@ -211,12 +228,12 @@ export class ThreeRenderer implements IRenderer {
             mesh.position.y = -node.y
 
             this.scene.add(mesh)
-            nodeCoords.set(node.id.toString(), [
-                mesh.position.x,
-                mesh.position.y,
-                width,
-                node.height,
-            ])
+            nodeCoords.set(node.id.toString(), {
+                x: mesh.position.x,
+                y: mesh.position.y,
+                width: width,
+                height: node.height,
+            })
 
             // Draw text.
             const color = new Color(0x006699)
@@ -226,10 +243,7 @@ export class ThreeRenderer implements IRenderer {
                 side: DoubleSide,
             })
 
-            const shapes = this.font!.generateShapes(
-                `${node.id}:${node.sequence}`,
-                5
-            )
+            const shapes = this.font!.generateShapes(`${node.sequence}`, 5)
             const textGeometry = new ShapeGeometry(shapes)
             textGeometry.computeBoundingBox()
             // eslint-disable-next-line prettier/prettier
@@ -259,14 +273,14 @@ export class ThreeRenderer implements IRenderer {
 
             console.log(`drawing edge: ${edge.from} -> ${edge.to}`)
 
-            const [fromX, fromY, fromWidth] = nodeCoords.get(edge.from)!
+            const fromCoord = nodeCoords.get(edge.from)!
             let from = edge.from_start
-                ? [fromX - fromWidth / 2, fromY, 0]
-                : [fromX + fromWidth / 2, fromY, 0]
-            const [toX, toY, toWidth] = nodeCoords.get(edge.to)!
+                ? [fromCoord.x - fromCoord.width / 2, fromCoord.y, 0]
+                : [fromCoord.x + fromCoord.width / 2, fromCoord.y, 0]
+            const toCoord = nodeCoords.get(edge.to)!
             let to = edge.to_end
-                ? [toX + toWidth / 2, toY, 0]
-                : [toX - toWidth / 2, toY, 0]
+                ? [toCoord.x + toCoord.width / 2, toCoord.y, 0]
+                : [toCoord.x - toCoord.width / 2, toCoord.y, 0]
 
             // Bezier curve
             let dist = to[0] - from[0]
@@ -322,9 +336,9 @@ export class ThreeRenderer implements IRenderer {
                     continue
                 }
 
-                const [x, y, width, height] = nodeCoords.get(node)!
+                const coord = nodeCoords.get(node)!
 
-                const geometry = new PlaneGeometry(width, height)
+                const geometry = new PlaneGeometry(coord.width, coord.height)
                 const material = new MeshLambertMaterial({
                     color: new Color(color.r, color.g, color.b).getHex(),
                     opacity: 0.1,
@@ -334,8 +348,8 @@ export class ThreeRenderer implements IRenderer {
                 // Create mesh for node.
                 const mesh = new Mesh(geometry, material)
                 mesh.castShadow = true
-                mesh.position.x = x
-                mesh.position.y = y
+                mesh.position.x = coord.x
+                mesh.position.y = coord.y
                 mesh.position.z = 2 + counter / paths.length
                 this.scene.add(mesh)
                 meshes.push(mesh)
