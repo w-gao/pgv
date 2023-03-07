@@ -53,7 +53,8 @@ export class ThreeRenderer implements IRenderer {
      */
     private active: boolean = false
 
-    private activePathIndex: number = -1
+    // 1-based index of the currently selected path. 0: none
+    private activePathIndex: number = 0
     private nodeCoords: Map<string, NodeCoord> = new Map()
     private pathNames: Array<string> = []
     private pathMeshes: Map<string, Array<Mesh>> = new Map()
@@ -150,12 +151,12 @@ export class ThreeRenderer implements IRenderer {
             switch (ev.code) {
                 case "ArrowUp":
                     this.setActivePath(
-                        mod(this.activePathIndex - 1, this.pathNames.length)
+                        mod(this.activePathIndex + 1, this.pathNames.length + 1)
                     )
                     break
                 case "ArrowDown":
                     this.setActivePath(
-                        mod(this.activePathIndex + 1, this.pathNames.length)
+                        mod(this.activePathIndex - 1, this.pathNames.length + 1)
                     )
                     break
             }
@@ -372,7 +373,7 @@ export class ThreeRenderer implements IRenderer {
 
     clear(): void {
         this.active = false
-        this.activePathIndex = -1
+        this.activePathIndex = 0
         this.nodeCoords.clear()
         this.pathNames = []
         this.pathMeshes.clear()
@@ -394,10 +395,10 @@ export class ThreeRenderer implements IRenderer {
      * Select a path as the active one. This makes the path less transparent.
      */
     setActivePath(index: number): void {
-        if (this.activePathIndex !== -1) {
+        if (this.activePathIndex !== 0) {
             // Reset opacity of previous path.
             const prevMeshes = this.pathMeshes.get(
-                this.pathNames[this.activePathIndex]
+                this.pathNames[this.activePathIndex - 1]
             )!
             for (let mesh of prevMeshes) {
                 if (mesh.material instanceof Material) {
@@ -406,10 +407,16 @@ export class ThreeRenderer implements IRenderer {
             }
         }
 
-        // Change opacity of active path.
         this.activePathIndex = index
+
+        if (index === 0) {
+            this.uiCallbackFn.updateSelectedPath([0, "none"])
+            return
+        }
+
+        // Change opacity of active path.
         const meshes = this.pathMeshes.get(
-            this.pathNames[this.activePathIndex]
+            this.pathNames[this.activePathIndex - 1]
         )!
         for (let mesh of meshes) {
             if (mesh.material instanceof Material) {
@@ -417,6 +424,6 @@ export class ThreeRenderer implements IRenderer {
             }
         }
 
-        this.uiCallbackFn.updateSelectedPath([index, this.pathNames[index]])
+        this.uiCallbackFn.updateSelectedPath([index, this.pathNames[index - 1]])
     }
 }

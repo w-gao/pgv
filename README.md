@@ -2,6 +2,8 @@
 
 > A web-based, interactive pangenome visualization tool
 
+<img src="https://user-images.githubusercontent.com/20177171/223407059-c04406bd-4b6c-427f-b1c3-106aaad06257.png" width="250px" />
+
 [![demo](https://github.com/w-gao/pgv/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/w-gao/pgv/actions/workflows/deploy.yml)
 
 
