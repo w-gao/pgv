@@ -1,0 +1,20 @@
+[
+    {
+        "name": "tiny",
+        "displayName": "tiny example from vg",
+        "xgFile": "tiny.vg.xg",
+        "jsonFile": "tiny.vg.xg.json"
+    },
+    {
+        "name": "x",
+        "displayName": "x.xg",
+        "xgFile": "x.vg.xg",
+        "jsonFile": "x.vg.xg.json"
+    },
+    {
+        "name": "K-3138",
+        "displayName": "K-3138.xg",
+        "xgFile": "K-3138.xg",
+        "jsonFile": "K-3138.json"
+    }
+]

@@ -30,9 +30,9 @@ jobs:
       - name: Run prebuild script
         run: ./prebuild.sh
       - name: Build core
-        run: yarn workspace @pgv/core build
+        run: yarn core:build
       - name: Build web
-        run: yarn workspace @pgv/web build --base /pgv
+        run: yarn web:build --base /pgv
       - name: Upload production artifact
         uses: actions/upload-artifact@v3
         with:

@@ -3,7 +3,7 @@ import { parseGraph } from "@pgv/core/src/model"
 import { IRepo, GraphDesc } from "."
 
 /**
- * A local repo that stores some small, synthetic examples.
+ * A local, static repo that stores some small, synthetic examples.
  */
 export class ExampleDataRepo implements IRepo {
     displayName: string
@@ -12,39 +12,31 @@ export class ExampleDataRepo implements IRepo {
     private descs: GraphDesc[] = []
     private graphs: Map<string, string> = new Map()
 
-    constructor(displayName: string) {
-        this.displayName = displayName
+    private readonly baseUrl: string
+
+    constructor(name: string, config: any) {
+        this.displayName = name
         this.supportsUpload = false
 
-        this.descs.push({
-            name: "tiny example from vg",
-            identifier: "tiny",
-        })
-        this.graphs.set("tiny", "data/tiny.vg.json")
-
-        this.descs.push({
-            name: "x.vg.xg",
-            identifier: "x.vg.xg",
-        })
-        this.graphs.set("x.vg.xg", "data/x.vg.xg.json")
-
-        this.descs.push({
-            name: "K-3138.xg",
-            identifier: "K-3138.xg",
-        })
-        this.graphs.set("K-3138.xg", "data/K-3138.json")
-
-        this.descs.push({
-            name: "snp1kg-BRCA1.chunked.xg",
-            identifier: "snp1kg-BRCA1.chunked.xg",
-        })
-        this.graphs.set(
-            "snp1kg-BRCA1.chunked.xg",
-            "data/snp1kg-BRCA1.chunked.json"
-        )
+        this.baseUrl = config && config["baseUrl"] ? config["baseUrl"] : "data"
     }
 
     async connect(): Promise<string | null> {
+        const data = await fetch(`${this.baseUrl}/sources.json`)
+        const json = await data.json()
+
+        for (let graph of json) {
+            const name = graph["name"]
+            const displayName = graph["displayName"]
+            const jsonFile = graph["jsonFile"]
+
+            this.descs.push({
+                name: displayName,
+                identifier: name,
+            })
+            this.graphs.set(name, `${this.baseUrl}/${name}/${jsonFile}`)
+        }
+
         return "local"
     }
 
@@ -53,7 +45,7 @@ export class ExampleDataRepo implements IRepo {
     }
 
     async downloadGraph(
-        identifier: string,
+        identifier: string
         // config: DownloadGraphConfig
     ): Promise<Graph | null> {
         const url = this.graphs.get(identifier)

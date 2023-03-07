@@ -17,6 +17,9 @@ import "./style.css"
                 type: "demo",
                 id: "demo0",
                 name: "local demo [offline]",
+                config: {
+                    baseUrl: "./examples",
+                },
             },
             // {
             //     type: "api",

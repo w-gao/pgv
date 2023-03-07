@@ -76,7 +76,10 @@ export class PGV {
             switch (repoConfig.type) {
                 case "demo":
                 default:
-                    repo = new ExampleDataRepo(repoConfig.name)
+                    repo = new ExampleDataRepo(
+                        repoConfig.name,
+                        repoConfig.config
+                    )
             }
             this.repos.set(repoConfig.id, repo)
         }
