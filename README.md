@@ -45,6 +45,7 @@ sequence graph itself on the x-y plane, and paths are rendered as separate layer
 - [ ] interactivity
     - [X] navigation buttons for mobile
     - [X] display number of nodes, edges, paths, selected path
+    - [ ] hover node should show coverage (% of paths that walks over this node)
 - [ ] demo graphs
     - [ ] find/generate better graphs to display different SVs
     - [ ] take screenshots for paper

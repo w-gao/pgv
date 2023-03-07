@@ -97,7 +97,7 @@ export class Header implements CallbacksFn {
     private numNodes?: number
     private numEdges?: number
     private numPaths?: number
-    private selectedPath?: string
+    private selectedPath?: [number, string]
 
     constructor(private app: PGV, private parent: HTMLElement) {
         this.element = document.createElement("div")
@@ -229,7 +229,10 @@ export class Header implements CallbacksFn {
         }
     }
 
-    updateSelectedPath(path: string | undefined, silent?: boolean): void {
+    updateSelectedPath(
+        path: [number, string] | undefined,
+        silent?: boolean
+    ): void {
         this.selectedPath = path
         if (!silent) {
             this.updateStatusBar()
@@ -249,7 +252,7 @@ export class Header implements CallbacksFn {
             text.push(
                 `paths: ${this.numPaths}` +
                     (this.selectedPath
-                        ? ` (selected: <span>${this.selectedPath}</span>)`
+                        ? ` (selected: ${this.selectedPath[0]} - <span>${this.selectedPath[1]}</span>)`
                         : "")
             )
         }

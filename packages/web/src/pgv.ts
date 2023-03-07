@@ -38,7 +38,10 @@ export interface CallbacksFn {
     updateNodes(nodes: number | undefined, silent?: boolean): void
     updateEdges(edges: number | undefined, silent?: boolean): void
     updatePaths(paths: number | undefined, silent?: boolean): void
-    updateSelectedPath(path: string | undefined, silent?: boolean): void
+    updateSelectedPath(
+        path: [number, string] | undefined,
+        silent?: boolean
+    ): void
 
     // Force update.
     updateStatusBar(): void

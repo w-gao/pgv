@@ -1,20 +1,23 @@
 [
     {
-        "name": "tiny",
-        "displayName": "tiny example from vg",
+        "identifier": "tiny",
+        "name": "tiny example from vg",
         "xgFile": "tiny.vg.xg",
+        "region": null,
         "jsonFile": "tiny.vg.xg.json"
     },
     {
-        "name": "x",
-        "displayName": "x.xg",
+        "identifier": "x",
+        "name": "x.xg",
         "xgFile": "x.vg.xg",
+        "region": null,
         "jsonFile": "x.vg.xg.json"
     },
     {
-        "name": "K-3138",
-        "displayName": "K-3138.xg",
+        "identifier": "K-3138",
+        "name": "K-3138.xg",
         "xgFile": "K-3138.xg",
+        "region": null,
         "jsonFile": "K-3138.json"
     }
 ]

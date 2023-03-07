@@ -26,15 +26,18 @@ export class ExampleDataRepo implements IRepo {
         const json = await data.json()
 
         for (let graph of json) {
+            const identifier = graph["identifier"]
             const name = graph["name"]
-            const displayName = graph["displayName"]
             const jsonFile = graph["jsonFile"]
 
             this.descs.push({
-                name: displayName,
-                identifier: name,
+                identifier: identifier,
+                name: name,
             })
-            this.graphs.set(name, `${this.baseUrl}/${name}/${jsonFile}`)
+            this.graphs.set(
+                identifier,
+                `${this.baseUrl}/${identifier}/${jsonFile}`
+            )
         }
 
         return "local"

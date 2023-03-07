@@ -417,6 +417,6 @@ export class ThreeRenderer implements IRenderer {
             }
         }
 
-        this.uiCallbackFn.updateSelectedPath(this.pathNames[index])
+        this.uiCallbackFn.updateSelectedPath([index, this.pathNames[index]])
     }
 }
