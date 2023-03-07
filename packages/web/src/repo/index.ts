@@ -11,10 +11,10 @@ export type GraphDesc = {
     region?: string
 
     // basic stats
-    numNodes?: number
-    numEdges?: number
-    numPaths?: number
-    length?: number
+    // numNodes?: number
+    // numEdges?: number
+    // numPaths?: number
+    // length?: number
 }
 
 export type DownloadGraphConfig = {
