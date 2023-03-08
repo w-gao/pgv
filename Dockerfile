@@ -7,10 +7,10 @@ ENV DEBIAN_FRONTEND noninteractive
 WORKDIR /pgv
 
 RUN apt-get update && apt-get install -y \
+    python3 \
     nginx \
     vim \
-    wget \
-    curl
+    wget
 
 # Install Node.js
 # RUN curl -sL https://deb.nodesource.com/setup_16.x | bash && apt-get install -y gnupg nodejs
@@ -32,7 +32,10 @@ COPY docker/nginx.conf /etc/nginx/sites-enabled/default
 COPY docker/start.sh start.sh
 
 # Copy over build files.
-COPY ui ./ui
+COPY ./packages/web/dist ./ui
 COPY cli.py ./cli.py
+
+# Configure pgv CLI to use the correct path
+ENV PGV_DEFAULT_PATH "/pgv/ui/examples"
 
 CMD ["./start.sh"]

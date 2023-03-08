@@ -85,16 +85,29 @@ vg chunk -x cactus.xg -c 20 -r 24:27 | vg view -j - | jq . > cactus_r24\:27_c20.
 ### Build the image
 
 ```
-docker build -t pgv:0.0.1 .
+# Build project
+yarn core:build
+yarn web:build
+
+# Build image (with latest tag)
+docker build -t pgv .
 ```
 
 ### Run the image locally
 
 ```
-docker run -it --name pgv --rm -v "$(pwd)/examples":/pgv/ui/examples -p 8000:8000 pgv:0.0.1
+docker run -it --name pgv --rm -v "$(pwd)/examples":/pgv/ui/examples -p 8000:8000 pgv:latest
 ```
 
-<!-- ### Publish to quay.io
+### Publish to quay.io
 
 ```
-``` -->
+# Login first
+docker login quay.io
+
+# Tag image
+docker image tag pgv quay.io/wlgao/pgv:latest
+
+# Push to quay.io
+docker image push quay.io/wlgao/pgv
+```

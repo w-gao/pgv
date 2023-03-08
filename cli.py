@@ -72,7 +72,6 @@ class PgvCLI:
         print("IDENTIFIER\tREGION")
         for src in self.sources:
             print(f"{src.get('identifier')}\t\t{src.get('region')}")
-        print(self.args)
 
     def cmd_rm(self) -> None:
         """
@@ -204,7 +203,7 @@ class PgvCLI:
 
 def main(args: List[str]) -> None:
     parser = argparse.ArgumentParser(description="CLI for pgv.")
-    parser.add_argument("-d", "--dest", type=str, default="./examples", help="The destination directory.")
+    parser.add_argument("-d", "--dest", type=str, default=os.environ.get("PGV_DEFAULT_PATH", "./examples"), help="The destination directory.")
     parser.add_argument("-D", "--debug", action='store_true', help="Enable debug logging.")
     subparsers = parser.add_subparsers(dest="cmd")
 
