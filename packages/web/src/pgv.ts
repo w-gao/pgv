@@ -3,7 +3,7 @@ import { ILayout } from "./layout"
 import { TubeMapLayout } from "./layout/tubemap"
 import { IRenderer } from "./renderer"
 import { ThreeRenderer } from "./renderer/three"
-import { IRepo } from "./repo"
+import { GraphDesc, IRepo } from "./repo"
 import { ExampleDataRepo } from "./repo/local"
 import { Header } from "./ui/components"
 
@@ -33,7 +33,7 @@ function setDefaultOptions(config?: Config): Config {
 /**
  * Functional interface for UI callbacks.
  */
-export interface CallbacksFn {
+export interface UICallbacksFn {
     // Status bar related.
     updateNodes(nodes: number | undefined, silent?: boolean): void
     updateEdges(edges: number | undefined, silent?: boolean): void
@@ -42,6 +42,7 @@ export interface CallbacksFn {
         path: [number, string] | undefined,
         silent?: boolean
     ): void
+    updateRegion(region: string | undefined, silent?: boolean): void
 
     // Force update.
     updateStatusBar(): void
@@ -92,7 +93,7 @@ export class PGV {
         this.headerUI.show()
 
         this.layout = new TubeMapLayout(root)
-        this.renderer = new ThreeRenderer(root, this.headerUI as CallbacksFn)
+        this.renderer = new ThreeRenderer(root, this.headerUI as UICallbacksFn)
 
         // TODO: we ought show spinner and hide UI when this is loading, but this is fairly quick at the moment.
         if (this.renderer instanceof ThreeRenderer) {
@@ -109,8 +110,8 @@ export class PGV {
      */
     async switchRepo(key: string): Promise<IRepo> {
         if (this.currentRepo !== undefined) {
-            this.renderer.clear()
             this.layout.reset()
+            this.renderer.clear()
             // this.currentRepo.disconnect()
         }
 
@@ -124,9 +125,11 @@ export class PGV {
         return repo
     }
 
-    render(graph: Graph) {
+    render(desc: GraphDesc, graph: Graph) {
         // Clear whatever we might have.
         this.renderer.clear()
+
+        this.headerUI.updateRegion(desc.region)
 
         // Apply the layout.
         const g = this.layout.apply(graph)

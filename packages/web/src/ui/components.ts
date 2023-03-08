@@ -1,4 +1,4 @@
-import { CallbacksFn, PGV } from "../pgv"
+import { UICallbacksFn, PGV } from "../pgv"
 
 function createFormGroupSelect(
     id: string,
@@ -89,7 +89,7 @@ function replaceFormGroupSelect(
     }
 }
 
-export class Header implements CallbacksFn {
+export class Header implements UICallbacksFn {
     private element: HTMLDivElement
     private statusBarElement: HTMLDivElement
     private vgFileElement: HTMLDivElement
@@ -98,6 +98,7 @@ export class Header implements CallbacksFn {
     private numEdges?: number
     private numPaths?: number
     private selectedPath?: [number, string]
+    private region?: string
 
     constructor(private app: PGV, private parent: HTMLElement) {
         this.element = document.createElement("div")
@@ -188,15 +189,17 @@ export class Header implements CallbacksFn {
             })
     }
 
-    selectVgGraph(graph: string) {
+    async selectVgGraph(graph: string) {
         console.log("selected graph: " + graph)
 
-        this.app.currentRepo!.downloadGraph(graph).then(g => {
-            console.log("graph:", g)
-            if (g !== null) {
-                this.app.render(g)
-            }
-        })
+        const repo = this.app.currentRepo!
+        const desc = await repo.getGraphDesc(graph)
+        const g = await repo.downloadGraph(graph)
+
+        console.log("graph:", g)
+        if (g !== null) {
+            this.app.render(desc!, g)
+        }
     }
 
     handleButtonClick(code: string) {
@@ -239,6 +242,16 @@ export class Header implements CallbacksFn {
         }
     }
 
+    updateRegion(
+        region: string | undefined,
+        silent?: boolean | undefined
+    ): void {
+        this.region = region
+        if (!silent) {
+            this.updateStatusBar()
+        }
+    }
+
     updateStatusBar(): void {
         let text = []
 
@@ -247,6 +260,9 @@ export class Header implements CallbacksFn {
         }
         if (this.numEdges) {
             text.push(`edges: ${this.numEdges}`)
+        }
+        if (this.region) {
+            text.push(`region: ${this.region}`)
         }
         if (this.numPaths) {
             text.push(

@@ -49,6 +49,14 @@ export interface IRepo {
     getGraphDescs(): Promise<GraphDesc[]>
 
     /**
+     * Return the graph description of the given graph, or undefined if the
+     * graph does not exist.
+     *
+     * @param identifier Unique identifier of the graph to retrieve.
+     */
+    getGraphDesc(identifier: string): Promise<GraphDesc | undefined>
+
+    /**
      * Given an identifier from getGraphDescs(), return the actual graph object.
      *
      * @param identifier Unique identifier of the graph to retrieve.

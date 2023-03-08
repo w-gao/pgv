@@ -9,7 +9,7 @@ export class ExampleDataRepo implements IRepo {
     displayName: string
     supportsUpload: boolean
 
-    private descs: GraphDesc[] = []
+    private descs: Map<string, GraphDesc> = new Map()
     private graphs: Map<string, string> = new Map()
 
     private readonly baseUrl: string
@@ -29,10 +29,12 @@ export class ExampleDataRepo implements IRepo {
             const identifier = graph["identifier"]
             const name = graph["name"]
             const jsonFile = graph["jsonFile"]
+            const region = graph["region"]
 
-            this.descs.push({
+            this.descs.set(identifier, {
                 identifier: identifier,
                 name: name,
+                region: region,
             })
             this.graphs.set(
                 identifier,
@@ -44,7 +46,11 @@ export class ExampleDataRepo implements IRepo {
     }
 
     async getGraphDescs(): Promise<GraphDesc[]> {
-        return this.descs
+        return Array.from(this.descs.values())
+    }
+
+    async getGraphDesc(identifier: string): Promise<GraphDesc | undefined> {
+        return this.descs.get(identifier)
     }
 
     async downloadGraph(

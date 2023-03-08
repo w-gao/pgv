@@ -31,6 +31,10 @@ export class TubeMapLayout implements ILayout {
         const nodes = vgExtractNodes(g)
         const tracks = vgExtractTracks(g)
 
+        // We're not quite ready for rendering reads yet.
+        // const gam = []
+        // const reads = vgExtractReads(nodes, tracks, gam)
+
         const layout = createLayout({
             svgID: "#tubeMapSVG",
             nodes: nodes,

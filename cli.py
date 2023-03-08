@@ -33,6 +33,12 @@ $ python3 cli.py update tiny \
     --node-range 1:3 \
     --name "tiny example"
 
+
+- To update a graph (with GBWT): 
+   
+$ python3 cli.py update x \
+    --node-range 1:100 \
+    --gbwt-name x.vg.gbwt
 """
 
 

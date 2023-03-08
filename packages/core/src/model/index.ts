@@ -27,7 +27,7 @@ export function parseGraph(obj: any): Graph {
     // Nodes
     for (let nodeObj of nodesObj) {
         let node: Node = {
-            id: parseInt(nodeObj["id"]),
+            id: nodeObj["id"],
             sequence: nodeObj["sequence"],
         }
 
@@ -41,8 +41,8 @@ export function parseGraph(obj: any): Graph {
     // Edges
     for (let edgeObj of edgesObj) {
         let edge: Edge = {
-            from: parseInt(edgeObj["from"]),
-            to: parseInt(edgeObj["to"]),
+            from: edgeObj["from"],
+            to: edgeObj["to"],
         }
 
         if (edgeObj["from_start"] !== undefined) {

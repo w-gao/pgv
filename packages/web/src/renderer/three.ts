@@ -25,7 +25,7 @@ import {
 } from "three"
 import { FlyControls } from "three/examples/jsm/controls/FlyControls"
 import { Font, FontLoader } from "three/examples/jsm/loaders/FontLoader"
-import { CallbacksFn } from "../pgv"
+import { UICallbacksFn } from "../pgv"
 
 /**
  * Represent the coordinates and size of a node.
@@ -59,7 +59,7 @@ export class ThreeRenderer implements IRenderer {
     private pathNames: Array<string> = []
     private pathMeshes: Map<string, Array<Mesh>> = new Map()
 
-    constructor(parent: HTMLElement, private uiCallbackFn: CallbacksFn) {
+    constructor(parent: HTMLElement, private uiCallbackFn: UICallbacksFn) {
         // Create canvas container.
         const divElement = document.createElement("div")
         divElement.setAttribute("style", "width: 100%; height: 500px")
@@ -382,6 +382,7 @@ export class ThreeRenderer implements IRenderer {
         this.uiCallbackFn.updateEdges(undefined, false)
         this.uiCallbackFn.updatePaths(undefined, false)
         this.uiCallbackFn.updateSelectedPath(undefined, false)
+        this.uiCallbackFn.updateRegion(undefined, false)
         this.uiCallbackFn.updateStatusBar()
 
         while (this.scene.children.length > 0) {
