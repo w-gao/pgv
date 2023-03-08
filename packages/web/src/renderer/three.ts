@@ -151,12 +151,12 @@ export class ThreeRenderer implements IRenderer {
             switch (ev.code) {
                 case "ArrowUp":
                     this.setActivePath(
-                        mod(this.activePathIndex + 1, this.pathNames.length + 1)
+                        mod(this.activePathIndex - 1, this.pathNames.length + 1)
                     )
                     break
                 case "ArrowDown":
                     this.setActivePath(
-                        mod(this.activePathIndex - 1, this.pathNames.length + 1)
+                        mod(this.activePathIndex + 1, this.pathNames.length + 1)
                     )
                     break
             }

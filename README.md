@@ -98,7 +98,7 @@ vg chunk -x z.xg -g -c 20 -r 200 -T -b chunk -E regions.tsv > z.chunk.vg
 vg index z.chunk.vg -x z.chunk.xg 
 vg view -dnp z.chunk.xg | dot -Tsvg -o z.chunk.svg
 
-vg view -j z.chunk.xg | dot -Tsvg -o z.chunk.json
+vg view -j z.chunk.xg > z.chunk.json
 ```
 
 
