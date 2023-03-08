@@ -1,3 +1,5 @@
+.git
+
 logs
 *.log
 npm-debug.log*
@@ -25,4 +27,3 @@ coverage
 
 ui
 vgtests
-dagre-layout

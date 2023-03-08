@@ -11,7 +11,7 @@
   "license": "MIT",
   "scripts": {
     "web:dev": "yarn workspace @pgv/web dev",
-    "web:build": "yarn workspace @pgv/web build",
+    "web:build": "yarn workspace @pgv/web build --outDir ./../../ui",
     "core:dev": "yarn workspace @pgv/core dev",
     "core:build": "yarn workspace @pgv/core build",
     "lint": "eslint 'packages/**/{src,__tests__}/**/*.{js,jsx,ts,tsx}'",
