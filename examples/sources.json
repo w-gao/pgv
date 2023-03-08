@@ -2,16 +2,16 @@
     {
         "identifier": "tiny",
         "name": "tiny example from vg",
-        "xgFile": "tiny.vg.xg",
+        "xgFile": "tiny.xg",
         "region": null,
-        "jsonFile": "tiny.vg.xg.json"
+        "jsonFile": "tiny.xg.json"
     },
     {
         "identifier": "x",
         "name": "x.xg",
-        "xgFile": "x.vg.xg",
+        "xgFile": "x.xg",
         "region": null,
-        "jsonFile": "x.vg.xg.json"
+        "jsonFile": "x.xg.json"
     },
     {
         "identifier": "K-3138",

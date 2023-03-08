@@ -62,8 +62,22 @@ Backend
 
 ## vg notes
 
+### Running a vg container
 
+```console
+docker run -it --name pgv-vg \
+    -v "$(pwd)":/vg/pgv \
+    quay.io/vgteam/vg:latest \
+    bash
 ```
+
+```console
+docker start pgv-vg -i
+```
+
+### Data flow
+
+```console
 # Construct vg graph from a FASTA and VCF file (reference + variants).
 vg construct -r z.fa -v z.vcf.gz > z.vg
 
@@ -90,6 +104,6 @@ vg view -j z.chunk.xg | dot -Tsvg -o z.chunk.json
 
 ### Cactus example
 
-```
+```console
 vg chunk -x cactus.xg -c 20 -r 24:27 | vg view -j - | jq . > cactus_r24\:27_c20.json
 ```

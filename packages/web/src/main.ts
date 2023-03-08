@@ -16,7 +16,7 @@ import "./style.css"
             {
                 type: "demo",
                 id: "demo0",
-                name: "local demo [offline]",
+                name: "local demo [examples]",
                 config: {
                     baseUrl: "./examples",
                 },
