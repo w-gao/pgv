@@ -8,10 +8,10 @@
     },
     {
         "identifier": "x",
-        "name": "x.xg",
-        "xgFile": "x.xg",
-        "region": null,
-        "jsonFile": "x.xg.json"
+        "name": "x.vg.xg",
+        "xgFile": "x.chunked.xg",
+        "region": "1:100",
+        "jsonFile": "x.chunked.xg.json"
     },
     {
         "identifier": "K-3138",

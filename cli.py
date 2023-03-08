@@ -96,7 +96,12 @@ class PgvCLI:
         # Chunk the file based on region
         if args.node_range:
             cmd = ["vg", "chunk", "-x", os.path.join(dir, xgFile), "-c", str(args.context_step), "-r", args.node_range]
+            if args.gbwt:
+                cmd.extend(["--gbwt-name", args.gbwt])
+            cmd.extend(["-T", "-b", os.path.join(dir, "chunk"), "-E", os.path.join(dir, "regions.tsv")])
+
             xgFile = f"{identifier}.chunked.xg"
+            logger.info("Running subprocess command: '%s'", " ".join(cmd))
             with open(os.path.join(dir, xgFile), "w") as f:
                 popen = subprocess.Popen(cmd, cwd=os.getcwd(), stdout=f, stderr=subprocess.PIPE)
                 _, stderr = popen.communicate()
@@ -104,7 +109,7 @@ class PgvCLI:
                 # "vg chunk" failed
                 # TODO: xgFile would've been overwritten.
                 logger.warning("ERROR: 'vg chunk' failed:", stderr)
-                exit()
+                exit(1)
 
         # Get a JSON graph for pgv to interpret.
         cmd = ["vg", "view", "-j", os.path.join(dir, xgFile)]
@@ -114,9 +119,9 @@ class PgvCLI:
             _, stderr = popen.communicate()
         if popen.returncode != 0:
             # "vg index" failed
-            shutil.rmtree(dir)
+            # TODO: xgFile would've been overwritten.
             logger.warning("ERROR: 'vg index' failed:", stderr)
-            exit()
+            exit(1)
 
         # Update sources.json.
         if args.display_name:
@@ -207,6 +212,10 @@ class PgvCLI:
         # Chunk the file based on region
         if args.node_range:
             cmd = ["vg", "chunk", "-x", os.path.join(dir, xgFile), "-c", str(args.context_step), "-r", args.node_range]
+            if args.gbwt:
+                cmd.extend(["--gbwt-name", args.gbwt])
+            cmd.extend(["-T", "-b", os.path.join(dir, "chunk"), "-E", os.path.join(dir, "regions.tsv")])
+
             xgFile = f"{identifier}.chunked.xg"
             with open(os.path.join(dir, xgFile), "w") as f:
                 popen = subprocess.Popen(cmd, cwd=os.getcwd(), stdout=f, stderr=subprocess.PIPE)
@@ -254,18 +263,22 @@ def main(args: List[str]) -> None:
     # "add" command
     add_parser = subparsers.add_parser("add", help="Add a new graph.")
     add_parser.add_argument("identifier")
+    add_parser.add_argument("-n", "--name", dest="display_name", help="display name")
+    # construct args
     add_parser.add_argument("-f", "--reference", metavar="FILE", action="extend", nargs="+", help="input FASTA reference file(s)")
     add_parser.add_argument("-v", "--vcf", metavar="FILE", action="extend", nargs="*", help="input VCF file(s)")
+    # chunk args
     add_parser.add_argument("-r", "--node-range", dest="node_range", metavar="N:M", help="the node range")
     add_parser.add_argument("-c", "--context-step", dest="context_step", type=int, metavar="N", help="expand N node steps as content", default=20)
-    add_parser.add_argument("-n", "--name", dest="display_name", help="display name")
+    add_parser.add_argument("-G", "--gbwt-name", dest="gbwt", metavar="FILE", help="input GBWT file")
 
     # "update" command
     update_parser = subparsers.add_parser("update", help="Update the chunk range of an existing graph.")
     update_parser.add_argument("identifier")
+    update_parser.add_argument("-n", "--name", dest="display_name", help="display name")
     update_parser.add_argument("-r", "--node-range", dest="node_range", metavar="N:M", help="the node range")
     update_parser.add_argument("-c", "--context-step", dest="context_step", type=int, metavar="N", help="expand N node steps as content", default=20)
-    update_parser.add_argument("-n", "--name", dest="display_name", help="display name")
+    update_parser.add_argument("-G", "--gbwt-name", dest="gbwt", metavar="FILE", help="input GBWT file")
 
     # "rm" command
     rm_parser = subparsers.add_parser("rm", help="Remove a graph.")
