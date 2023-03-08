@@ -2,6 +2,8 @@
   "name": "@pgv/web",
   "version": "0.0.1",
   "type": "module",
+  "author": "William Gao <wlgao@ucsc.edu>",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
