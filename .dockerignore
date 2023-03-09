@@ -25,5 +25,4 @@ coverage
 *.sln
 *.sw?
 
-ui
 vgtests

@@ -230,6 +230,14 @@ def main(args: List[str]) -> None:
     if options.debug:
         logging.basicConfig(level=logging.DEBUG)
 
+    # Make sure dest folder exists.
+    if not os.path.exists(options.dest):
+        os.mkdir(options.dest)
+    src_file = os.path.join(options.dest, "sources.json")
+    if not os.path.exists(src_file):
+        with open(src_file, "w") as f:
+            json.dump([], f)
+
     cli = PgvCLI(args=options)
 
     if options.cmd == "ls":
