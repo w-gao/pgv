@@ -109,6 +109,28 @@ http://localhost:8000
 ```
 
 
+## UI - Usage
+
+When you select a graph, you are presented with this interface:
+
+![image](https://user-images.githubusercontent.com/20177171/223928293-6c678556-dbea-4936-933b-caa04e78333d.png)
+
+
+This is split into three sections:
+
+- The header for graph selection and navigation
+- The [sequenceTubeMap](https://github.com/vgteam/sequenceTubeMap) render of the graph
+- The `pgv` render of the graph
+
+
+### Basic controls
+
+- To navigate the graph, you can use the `"←"` and `"→"` buttons at the top, or the `A` and `D` keys.
+- To cycle between the paths, you can use the `"↑"` and `"↓"` buttons, or the `up` and `down` arrow keys.
+- You can also move closer or away from the graph using the `W` and `S` keys, up and down using the `R` and `F` keys.
+- (controls such as movement speed are limited at the moment, but can be easily added if needed)
+
+
 ## Using your own graph
 
 If you want to use your own data, you need to pre-process the files first. This can be done by the
