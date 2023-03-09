@@ -99,6 +99,7 @@ export class Header implements UICallbacksFn {
     private numPaths?: number
     private selectedPath?: [number, string]
     private region?: string
+    private selectedNode?: [string, number, number]
 
     constructor(private app: PGV, private parent: HTMLElement) {
         this.element = document.createElement("div")
@@ -252,6 +253,16 @@ export class Header implements UICallbacksFn {
         }
     }
 
+    updateSelectedNode(
+        node: [string, number, number] | undefined,
+        silent?: boolean
+    ): void {
+        this.selectedNode = node
+        if (!silent) {
+            this.updateStatusBar()
+        }
+    }
+
     updateStatusBar(): void {
         let text = []
 
@@ -270,6 +281,13 @@ export class Header implements UICallbacksFn {
                     (this.selectedPath
                         ? ` (selected: ${this.selectedPath[0]} - <span>${this.selectedPath[1]}</span>)`
                         : "")
+            )
+        }
+
+        if (this.selectedNode) {
+            const [id, len, paths] = this.selectedNode
+            text.push(
+                `highlighted node: ${id}, length: ${len}, path freq: ${paths}/${this.numPaths}`
             )
         }
 

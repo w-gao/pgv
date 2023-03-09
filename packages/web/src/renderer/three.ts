@@ -9,6 +9,9 @@ import {
     Color,
     Clock,
     DoubleSide,
+    Group,
+    Raycaster,
+    Vector2,
     Vector3,
     BoxGeometry,
     BufferGeometry,
@@ -38,6 +41,15 @@ type NodeCoord = {
 }
 
 /**
+ * Store information of a node to be displayed.
+ */
+type NodeInfo = {
+    id: string
+    seqLength: number
+    numPaths: number
+}
+
+/**
  * Variation graph renderer using Three.js.
  */
 export class ThreeRenderer implements IRenderer {
@@ -48,6 +60,8 @@ export class ThreeRenderer implements IRenderer {
 
     private font: Font | undefined
 
+    private nodesGroup!: Group
+
     /**
      * True if we are rendering a graph.
      */
@@ -55,9 +69,13 @@ export class ThreeRenderer implements IRenderer {
 
     // 1-based index of the currently selected path. 0: none
     private activePathIndex: number = 0
-    private nodeCoords: Map<string, NodeCoord> = new Map()
     private pathNames: Array<string> = []
     private pathMeshes: Map<string, Array<Mesh>> = new Map()
+
+    // The ID of the currently selected node. undefined: none
+    private activeNodeId?: number
+    private nodeInfos: Map<string, NodeInfo> = new Map()
+    private nodeCoords: Map<string, NodeCoord> = new Map()
 
     constructor(parent: HTMLElement, private uiCallbackFn: UICallbacksFn) {
         // Create canvas container.
@@ -80,29 +98,6 @@ export class ThreeRenderer implements IRenderer {
         this.renderer.setSize(width, height)
         this.renderer.shadowMap.enabled = true
 
-        // Disable pointer events registered by FlyControls.
-        const addEventListenerFn = this.renderer.domElement.addEventListener
-        this.renderer.domElement.addEventListener = (
-            type: any,
-            listener: any
-        ) => {
-            if (
-                type === "contextmenu" ||
-                type === "pointerdown" ||
-                type === "pointermove" ||
-                type === "pointerup"
-            ) {
-                return
-            }
-
-            addEventListenerFn(type, listener)
-        }
-        const controls = new FlyControls(this.camera, this.renderer.domElement)
-        controls.movementSpeed = 100
-        controls.rollSpeed = 0
-        controls.autoForward = false
-        controls.dragToLook = false
-
         this.element = this.renderer.domElement
         this.element.setAttribute("class", "renderCanvas")
 
@@ -111,23 +106,6 @@ export class ThreeRenderer implements IRenderer {
 
         // Set up scene.
         this.setUpScene()
-
-        // Set up render loop.
-        const render = () => {
-            this.renderer.render(this.scene, this.camera)
-        }
-
-        const clock = new Clock(true)
-
-        // Request animation frame from the browser - the browser tells us when
-        // we get to render.
-        const animate = () => {
-            requestAnimationFrame(animate)
-
-            controls.update(clock.getDelta())
-
-            render()
-        }
 
         // Add event handler for resize event.
         const resize = () => {
@@ -164,6 +142,93 @@ export class ThreeRenderer implements IRenderer {
 
         window.addEventListener("keydown", keydown, false)
 
+        let selectedObject: any = null
+        const raycaster = new Raycaster()
+        const pointer = new Vector2()
+
+        // Add event handler for pointer move event.
+        const pointermove = (ev: PointerEvent) => {
+            pointer.x = (ev.offsetX / divElement.offsetWidth) * 2 - 1
+            pointer.y = -(ev.offsetY / divElement.offsetHeight) * 2 + 1
+
+            raycaster.setFromCamera(pointer, this.camera)
+            const intersects = raycaster.intersectObject(this.nodesGroup, true)
+            if (intersects.length > 0) {
+                const res = intersects.filter(function (res) {
+                    return res && res.object
+                })[0]
+                if (res && res.object) {
+                    selectedObject = res.object
+                    selectedObject.material.color.set("#fe2222")
+
+                    const nodeID = selectedObject.nodeID
+                    if (!nodeID || this.activeNodeId === nodeID) {
+                        return
+                    }
+
+                    const nodeInfo = this.nodeInfos.get(nodeID)
+                    if (!nodeInfo) {
+                        return
+                    }
+
+                    this.activeNodeId = nodeID
+                    this.uiCallbackFn.updateSelectedNode([
+                        nodeInfo.id,
+                        nodeInfo.seqLength,
+                        nodeInfo.numPaths,
+                    ])
+                }
+            } else if (selectedObject) {
+                selectedObject.material.color.set("#add8e6")
+                selectedObject = null
+                this.activeNodeId = undefined
+                this.uiCallbackFn.updateSelectedNode(undefined)
+            }
+        }
+        this.renderer.domElement.addEventListener("pointermove", pointermove)
+
+        // Set up control.
+
+        // Disable pointer events registered by FlyControls.
+        const addEventListenerFn = this.renderer.domElement.addEventListener
+        this.renderer.domElement.addEventListener = (
+            type: any,
+            listener: any
+        ) => {
+            if (
+                type === "contextmenu" ||
+                type === "pointerdown" ||
+                type === "pointermove" ||
+                type === "pointerup"
+            ) {
+                return
+            }
+
+            addEventListenerFn(type, listener)
+        }
+        const controls = new FlyControls(this.camera, this.renderer.domElement)
+        controls.movementSpeed = 100
+        controls.rollSpeed = 0
+        controls.autoForward = false
+        controls.dragToLook = false
+
+        // Set up render loop.
+        const render = () => {
+            this.renderer.render(this.scene, this.camera)
+        }
+
+        const clock = new Clock(true)
+
+        // Request animation frame from the browser - the browser tells us when
+        // we get to render.
+        const animate = () => {
+            requestAnimationFrame(animate)
+
+            controls.update(clock.getDelta())
+
+            render()
+        }
+
         // Kick off our render loop.
         animate()
     }
@@ -195,6 +260,9 @@ export class ThreeRenderer implements IRenderer {
 
         // Reset camera position.
         this.camera.position.set(100, -50, 100)
+
+        this.nodesGroup = new Group()
+        this.scene.add(this.nodesGroup)
     }
 
     drawGraph(nodes: PGVNode[], edges: Edge[], _refPaths?: Path[]): void {
@@ -211,6 +279,7 @@ export class ThreeRenderer implements IRenderer {
 
         // Draw nodes.
         for (let node of nodes) {
+            node.id = node.id.toString()
             console.log("drawing node:", node.sequence)
 
             node.x *= 0.75
@@ -233,8 +302,16 @@ export class ThreeRenderer implements IRenderer {
             mesh.position.x = node.x + node.width / 2
             mesh.position.y = -node.y
 
-            this.scene.add(mesh)
-            nodeCoords.set(node.id.toString(), {
+            // Attach metadata to this mesh for the hover event.
+            this.nodeInfos.set(node.id, {
+                id: node.id,
+                seqLength: node.sequence.length,
+                numPaths: 0,
+            })
+            ;(mesh as any).nodeID = node.id
+
+            this.nodesGroup.add(mesh)
+            nodeCoords.set(node.id, {
                 x: mesh.position.x,
                 y: mesh.position.y,
                 width: width,
@@ -361,6 +438,8 @@ export class ThreeRenderer implements IRenderer {
                 mesh.position.z = 2 + counter / paths.length
                 this.scene.add(mesh)
                 meshes.push(mesh)
+
+                this.nodeInfos.get(node)!.numPaths++
             }
 
             this.pathNames.push(path.name)
@@ -374,9 +453,12 @@ export class ThreeRenderer implements IRenderer {
     clear(): void {
         this.active = false
         this.activePathIndex = 0
-        this.nodeCoords.clear()
         this.pathNames = []
         this.pathMeshes.clear()
+
+        this.activeNodeId = undefined
+        this.nodeInfos.clear()
+        this.nodeCoords.clear()
 
         this.uiCallbackFn.updateNodes(undefined, false)
         this.uiCallbackFn.updateEdges(undefined, false)

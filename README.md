@@ -66,6 +66,12 @@ If successful, `pgv` should be running at:
 http://localhost:8000
 ```
 
+To stop the container, run:
+
+```concole
+docker stop pgv
+```
+
 
 ### Run from source
 
@@ -125,17 +131,16 @@ This is split into three sections:
 
 ### Basic controls
 
-- To navigate the graph, you can use the `"←"` and `"→"` buttons at the top, or the `A` and `D` keys.
-- To cycle between the paths, you can use the `"↑"` and `"↓"` buttons, or the `up` and `down` arrow keys.
+- To navigate the graph, you can use the `←` and `→` buttons in the header, or the `A` and `D` keys.
+- To cycle between the paths, you can use the `↑` and `↓` buttons, or the `up` and `down` arrow keys.
 - You can also move closer or away from the graph using the `W` and `S` keys, up and down using the `R` and `F` keys.
 - (controls such as movement speed are limited at the moment, but can be easily added if needed)
 
 
 ## Using your own graph
 
-If you want to use your own data, you need to pre-process the files first. This can be done by the
-[pgv CLI](./cli.py). Currently supported file formats are: FASTA (e.g.: `.fa`), VCF (e.g.:
-`.vcf`, `.vcf.gz`), and GBWT (e.g.: `.gbwt`).
+If you want to use your own data, you need to pre-process the files first. This can be done by the [pgv CLI](./cli.py).
+Currently supported file formats are: FASTA (`.fa`), VCF (`.vcf`, `.vcf.gz`), and GBWT (`.gbwt`).
 
 The following assumes that you have [`cli.py`](./cli.py) available, which is pre-installed inside the pgv container, or
 can be downloaded via:
@@ -145,7 +150,7 @@ curl -O https://raw.githubusercontent.com/w-gao/pgv/main/cli.py
 ```
 
 
-To construct a graph from a FASTA file (`c.fa`) and a VCF file (`c.vcf.gz`), run:
+For example, to construct a graph from a FASTA file (`x.fa`) and a VCF file (`x.vcf.gz`), run:
 
 ```console
 $ python3 cli.py add example \

@@ -1,8 +1,11 @@
 # dev notes
 
+Notes for development.
+
+
 ## MVP checklist
 
-- [ ] visualization of the graph itself from the nodes and edges (no haplotypes)
+- [X] visualization of the graph itself from the nodes and edges (no haplotypes)
     - [X] layout
         - [X] use tubemap as the layout engine
     - [X] nodes
@@ -11,14 +14,14 @@
         - [ ] improved curve calculation
 - [X] visualization of haplotypes on the z-axis (paths)
     - should be simple to do if we can visualize the graph
-- [ ] controls
+- [X] controls
     - [X] better camera positioning
     - [X] move graph with left, right arrow keys (simulate window move)
     - [X] select haplotypes with up, down arrow keys
 - [ ] interactivity
     - [X] navigation buttons for mobile
     - [X] display number of nodes, edges, paths, selected path
-    - [ ] hover node should show coverage (% of paths that walks over this node)
+    - [X] hover node should show coverage (% of paths that walks over this node)
 - [ ] demo graphs
     - [ ] find/generate better graphs to display different SVs
     - [ ] take screenshots for paper

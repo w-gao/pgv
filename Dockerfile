@@ -31,7 +31,7 @@ EXPOSE 8000
 COPY docker/nginx.conf /etc/nginx/sites-enabled/default
 COPY docker/start.sh start.sh
 
-# Copy over build files.
+# Copy over build files
 COPY ./packages/web/dist ./ui
 COPY cli.py ./cli.py
 

@@ -39,10 +39,17 @@ export interface UICallbacksFn {
     updateEdges(edges: number | undefined, silent?: boolean): void
     updatePaths(paths: number | undefined, silent?: boolean): void
     updateSelectedPath(
+        // [index, name]
         path: [number, string] | undefined,
         silent?: boolean
     ): void
     updateRegion(region: string | undefined, silent?: boolean): void
+
+    updateSelectedNode(
+        // [nodeID, seqLen, numPaths]
+        node: [string, number, number] | undefined,
+        silent?: boolean
+    ): void
 
     // Force update.
     updateStatusBar(): void
