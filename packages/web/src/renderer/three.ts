@@ -142,11 +142,18 @@ export class ThreeRenderer implements IRenderer {
 
         window.addEventListener("keydown", keydown, false)
 
+        // Add event handler for pointer move event.
         let selectedObject: any = null
         const raycaster = new Raycaster()
         const pointer = new Vector2()
 
-        // Add event handler for pointer move event.
+        const resetSelectedObject = () => {
+            selectedObject.material.color.set("#add8e6")
+            selectedObject = null
+            this.activeNodeId = undefined
+            this.uiCallbackFn.updateSelectedNode(undefined)
+        }
+
         const pointermove = (ev: PointerEvent) => {
             pointer.x = (ev.offsetX / divElement.offsetWidth) * 2 - 1
             pointer.y = -(ev.offsetY / divElement.offsetHeight) * 2 + 1
@@ -158,10 +165,7 @@ export class ThreeRenderer implements IRenderer {
                     return res && res.object
                 })[0]
                 if (res && res.object) {
-                    selectedObject = res.object
-                    selectedObject.material.color.set("#fe2222")
-
-                    const nodeID = selectedObject.nodeID
+                    const nodeID = (res.object as any).nodeID
                     if (!nodeID || this.activeNodeId === nodeID) {
                         return
                     }
@@ -171,6 +175,14 @@ export class ThreeRenderer implements IRenderer {
                         return
                     }
 
+                    if (this.activeNodeId !== undefined) {
+                        // We're probably on mobile and the pointer can jump from another node.
+                        resetSelectedObject()
+                    }
+
+                    selectedObject = res.object
+                    selectedObject.material.color.set("#fe2222")
+
                     this.activeNodeId = nodeID
                     this.uiCallbackFn.updateSelectedNode([
                         nodeInfo.id,
@@ -179,10 +191,7 @@ export class ThreeRenderer implements IRenderer {
                     ])
                 }
             } else if (selectedObject) {
-                selectedObject.material.color.set("#add8e6")
-                selectedObject = null
-                this.activeNodeId = undefined
-                this.uiCallbackFn.updateSelectedNode(undefined)
+                resetSelectedObject()
             }
         }
         this.renderer.domElement.addEventListener("pointermove", pointermove)
