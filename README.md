@@ -142,8 +142,8 @@ This is split into three sections:
 If you want to use your own data, you need to pre-process the files first. This can be done by the [pgv CLI](./cli.py).
 Currently supported file formats are: FASTA (`.fa`), VCF (`.vcf`, `.vcf.gz`), and GBWT (`.gbwt`).
 
-The following assumes that you have [`cli.py`](./cli.py) available, which is pre-installed inside the pgv container, or
-can be downloaded via:
+The following assumes that you have [`vg`](https://github.com/vgteam/vg/) installed. You also need [`cli.py`](./cli.py),
+which is pre-installed inside the pgv container, or can be downloaded via:
 
 ```console
 curl -O https://raw.githubusercontent.com/w-gao/pgv/main/cli.py

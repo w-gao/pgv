@@ -109,7 +109,7 @@ export class Header implements UICallbacksFn {
         this.element.appendChild(
             createFormGroupSelect(
                 "repo",
-                "Data source",
+                "data source",
                 app.config.repos || [],
                 false,
                 this.changeSource.bind(this)
@@ -264,6 +264,10 @@ export class Header implements UICallbacksFn {
     }
 
     updateStatusBar(): void {
+        const format = (count: number, item: string): string => {
+            return `${count} ${item}${count === 1 ? "" : "s"}`
+        }
+
         let text = []
 
         if (this.numNodes) {
@@ -287,7 +291,10 @@ export class Header implements UICallbacksFn {
         if (this.selectedNode) {
             const [id, len, paths] = this.selectedNode
             text.push(
-                `highlighted node ID: ${id}, length: ${len} bases, path freq: ${paths}/${this.numPaths}`
+                `node ID: ${id}, length: ${format(
+                    len,
+                    "base"
+                )}, path freq: ${paths}/${this.numPaths}`
             )
         }
 
