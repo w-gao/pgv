@@ -114,3 +114,17 @@ docker image tag pgv quay.io/wlgao/pgv:latest
 # Push to quay.io
 docker image push quay.io/wlgao/pgv
 ```
+
+
+### Build and publish to Docker Hub (for multiple platforms)
+
+```
+# Login first
+docker login docker.io
+
+# Create a builder instance
+docker buildx create --use
+
+# Build and push
+docker buildx build --platform linux/amd64,linux/arm64 -t wlgao/pgv --push .
+```

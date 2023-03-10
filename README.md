@@ -43,7 +43,7 @@ development and may not work well with your own data**. If you encounter any iss
 The easiest way to run `pgv` is through Docker:
 
 ```console
-$ docker pull quay.io/wlgao/pgv:latest
+$ docker pull wlgao/pgv:latest
 ```
 
 To run a container:
@@ -52,7 +52,7 @@ To run a container:
 $ docker run -d --name pgv \
     -v "$(pwd)/examples":/pgv/ui/examples \
     -p 8000:8000 \
-    quay.io/wlgao/pgv:latest
+    wlgao/pgv:latest
 ```
 
 This created a container in detach (`-d`) mode, exposes port `8000`, with a volume for the graph files.

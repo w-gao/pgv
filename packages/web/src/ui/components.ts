@@ -287,7 +287,7 @@ export class Header implements UICallbacksFn {
         if (this.selectedNode) {
             const [id, len, paths] = this.selectedNode
             text.push(
-                `highlighted node: ${id}, length: ${len}, path freq: ${paths}/${this.numPaths}`
+                `highlighted node ID: ${id}, length: ${len} bases, path freq: ${paths}/${this.numPaths}`
             )
         }
 
