@@ -17,7 +17,7 @@ export class TubeMapLayout implements ILayout {
             "svg"
         )
         svgElement.id = "tubeMapSVG"
-        svgElement.setAttribute("style", "width: 100%; max-width: 2000px")
+        svgElement.setAttribute("style", "width: 100%;")
         parent.appendChild(svgElement)
     }
 
