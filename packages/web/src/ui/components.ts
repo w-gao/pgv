@@ -134,24 +134,28 @@ export class Header implements UICallbacksFn {
 
         const leftButton = document.createElement("button")
         leftButton.innerHTML = "←"
+        leftButton.setAttribute("title", "KeyA")
         leftButton.addEventListener("click", () =>
             this.handleButtonClick("KeyA")
         )
 
         const rightButton = document.createElement("button")
         rightButton.innerHTML = "→"
+        rightButton.setAttribute("title", "KeyD")
         rightButton.addEventListener("click", () =>
             this.handleButtonClick("KeyD")
         )
 
         const upButton = document.createElement("button")
         upButton.innerHTML = "↑"
+        upButton.setAttribute("title", "ArrowUp")
         upButton.addEventListener("click", () =>
             this.handleButtonClick("ArrowUp")
         )
 
         const downButton = document.createElement("button")
         downButton.innerHTML = "↓"
+        downButton.setAttribute("title", "ArrowDown")
         downButton.addEventListener("click", () =>
             this.handleButtonClick("ArrowDown")
         )
@@ -160,6 +164,22 @@ export class Header implements UICallbacksFn {
         buttonContainer.appendChild(rightButton)
         buttonContainer.appendChild(upButton)
         buttonContainer.appendChild(downButton)
+
+        const tooltip = document.createElement("div")
+        tooltip.setAttribute("class", "tooltip")
+        tooltip.innerHTML = `
+        <div class="content">
+            <p>Select a graph above and use the arrow keys on the left to navigate the graph, or use keyboard shortcuts:</p>
+            <ul>
+                <li>A and D: left and right</li>
+                <li>W and S: forward and backward</li>
+                <li>R and F: up and down</li>
+                <li>↑ and ↓: cycle through paths</li>
+                <li>hover to select node</li>
+            <ul>
+        </div>
+        `
+        buttonContainer.appendChild(tooltip)
 
         this.element.appendChild(buttonContainer)
 
