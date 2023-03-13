@@ -55,10 +55,11 @@ $ docker run -d --name pgv \
     wlgao/pgv:latest
 ```
 
-This created a container in detach (`-d`) mode, exposes port `8000`, with a volume for the graph files.
+This creates a container in detach (`-d`) mode, exposes port `8000`, with a volume for the graph files.
 
-You can add additional volumes if you want to construct your own graphs inside the container, or, if you have `vg`
-installed on your local system, you can use the [pgv CLI](./cli.py) to pre-process graphs on your host machine.
+You can add additional volumes if you want to construct your own graphs inside the container, or, if you have
+[`vg`](https://github.com/vgteam/vg/) installed on your local system, you can use the [pgv CLI](./cli.py) to
+pre-process graphs.
 
 If successful, `pgv` should be running at:
 
