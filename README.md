@@ -194,4 +194,4 @@ $ python3 cli.py --help
 
 ## License
 
-Copyright (C) 2023 William Gao, under the MIT license.
+Copyright (c) 2023 William Gao. MIT license.
