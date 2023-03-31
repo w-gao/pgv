@@ -15,10 +15,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
   },
   "include": ["src"],
-  "references": [{
-    "path": "../core"
-  }]
+  "references": [
+    { "path": "../core" },
+    { "path": "./tsconfig.node.json" }
+  ],
 }

@@ -63,7 +63,7 @@ export interface IRepo {
      * @param config Configuration used to retrieve the graph.
      */
     downloadGraph(
-        identifier: string,
+        identifier: string
         // config: DownloadGraphConfig
     ): Promise<Graph | null>
 }

@@ -5,6 +5,7 @@ import { IRenderer } from "./renderer"
 import { ThreeRenderer } from "./renderer/three"
 import { GraphDesc, IRepo } from "./repo"
 import { ExampleDataRepo } from "./repo/local"
+import { renderApp } from "./ui"
 import { Header } from "./ui/components"
 
 export type RepoConfig = {
@@ -94,6 +95,8 @@ export class PGV {
             }
             this.repos.set(repoConfig.id, repo)
         }
+
+        renderApp()
 
         // inject UI components
         this.headerUI = new Header(this, root)

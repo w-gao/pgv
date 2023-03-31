@@ -1,5 +1,4 @@
 import { PGV } from "./pgv"
-import "./style.css"
 
 /**
  * Main entry.
