@@ -1,22 +1,26 @@
 import { useRef, useEffect } from "preact/hooks"
 import "./form.scss"
 
-/**
- * select box component.
- */
-export function FormSelect(props: {
+interface IProps {
     id: string
     text: string
     options: { id: string; name: string }[]
     defaultEmpty?: boolean
     onSelect?: (id: string) => void
-}) {
+}
+
+/**
+ * select box component.
+ */
+export function FormSelect(props: IProps) {
     const { id, text, options, defaultEmpty, onSelect } = props
     const selectRef = useRef<HTMLSelectElement>(null)
 
     // When "options" change, reset selection.
     useEffect(() => {
-        selectRef.current!.selectedIndex = 0
+        if (selectRef.current) {
+            selectRef.current.selectedIndex = 0
+        }
     }, [options])
 
     // When user selects an option, invoke the callback.

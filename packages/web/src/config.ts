@@ -15,6 +15,16 @@ export type Config = {
      * List of repository configurations.
      */
     repos?: RepoConfig[]
+
+    /**
+     * The layout engine.
+     */
+    layout?: "tubemap"
+
+    /**
+     * The renderer.
+     */
+    renderer?: "three"
 }
 
 export function setDefaultOptions(config?: Config): Config {
@@ -28,6 +38,14 @@ export function setDefaultOptions(config?: Config): Config {
 
     if (config.repos === undefined) {
         config.repos = []
+    }
+
+    if (config.layout === undefined) {
+        config.layout = "tubemap"
+    }
+
+    if (config.renderer === undefined) {
+        config.renderer = "three"
     }
 
     return config

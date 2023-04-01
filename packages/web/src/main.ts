@@ -27,6 +27,8 @@ import { PGV } from "./pgv"
             //     name: "local server",
             // },
         ],
+        layout: "tubemap",
+        renderer: "three",
     })
 
     console.log(app)

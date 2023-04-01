@@ -14,6 +14,7 @@ import "./style.css"
 export class UI {
     private graphsSignal: Signal<GraphDesc[]>
 
+    // TODO: the UI shouldn't take in the app; instead, the app should register events.
     constructor(root: HTMLElement, app: PGV, config: Config) {
         this.graphsSignal = signal([])
 

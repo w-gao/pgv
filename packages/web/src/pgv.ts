@@ -81,6 +81,7 @@ export class PGV {
         this.headerUI = new Header(this, root)
         this.headerUI.show()
 
+        // For now, config.layout === "tubemap" and config.renderer === "three".
         this.layout = new TubeMapLayout(root)
         this.renderer = new ThreeRenderer(root, this.headerUI as UICallbacksFn)
 

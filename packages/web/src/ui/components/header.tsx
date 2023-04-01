@@ -77,7 +77,7 @@ function SelectVgFile() {
     )
 }
 
-export const Header = () => {
+export function Header() {
     return (
         <div class="header">
             <SelectDataSource />
