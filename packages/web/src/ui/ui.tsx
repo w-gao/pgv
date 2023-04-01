@@ -1,10 +1,9 @@
 import { signal, Signal } from "@preact/signals-core"
 import { render } from "preact"
-import { Config } from "../config"
-import { PGV } from "../pgv"
+import { Config, PGV } from ".."
 import { GraphDesc } from "../repo"
-import { Header } from "./components/header"
-import { ApplicationProvider } from "./contexts/application"
+import { Header } from "./components"
+import { ApplicationProvider } from "./contexts"
 import "./style.css"
 
 /**
@@ -38,4 +37,6 @@ export class UI {
     updateGraphs(graphs: GraphDesc[]) {
         this.graphsSignal.value = graphs
     }
+
+    // TODO: event-based system for the UI to interface with the app?
 }

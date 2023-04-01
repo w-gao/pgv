@@ -22,7 +22,6 @@ export function FormSelect(props: {
     // When user selects an option, invoke the callback.
     const onChange = () => {
         const select = selectRef.current
-
         if (select === null) {
             console.warn("ref to <select> is gone")
             return

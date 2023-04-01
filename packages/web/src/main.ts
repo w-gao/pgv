@@ -11,6 +11,7 @@ import { PGV } from "./pgv"
     }
 
     const app = new PGV(root, {
+        debug: true,
         repos: [
             {
                 type: "demo",
@@ -27,5 +28,6 @@ import { PGV } from "./pgv"
             // },
         ],
     })
+
     console.log(app)
 })()

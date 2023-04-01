@@ -1,13 +1,10 @@
 import { Graph } from "@pgv/core/src/model/vg"
 import { Config, setDefaultOptions } from "./config"
-import { ILayout } from "./layout"
-import { TubeMapLayout } from "./layout/tubemap"
-import { IRenderer } from "./renderer"
-import { ThreeRenderer } from "./renderer/three"
-import { GraphDesc, IRepo } from "./repo"
-import { ExampleDataRepo } from "./repo/local"
+import { ILayout, TubeMapLayout } from "./layout"
+import { IRenderer, ThreeRenderer } from "./renderer"
+import { GraphDesc, IRepo, ExampleDataRepo } from "./repo"
 import { UI } from "./ui"
-import { Header } from "./ui/components"
+import { Header } from "./ui/deprecated"
 
 /**
  * Functional interface for UI callbacks.

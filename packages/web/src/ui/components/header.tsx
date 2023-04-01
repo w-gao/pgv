@@ -1,7 +1,7 @@
 import { effect } from "@preact/signals-core"
 import { useState } from "preact/hooks"
-import { GraphDesc } from "web/src/repo"
-import { usePGV } from "../contexts/application"
+import { GraphDesc } from "../../repo"
+import { usePGV } from "../contexts"
 import { FormSelect } from "./form"
 import "./header.scss"
 

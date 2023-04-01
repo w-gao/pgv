@@ -1,6 +1,4 @@
 import { PGVNode, Edge, Path } from "@pgv/core/src/model"
-import { IRenderer } from "."
-import { mod } from "../utils/math"
 import {
     Scene,
     PerspectiveCamera,
@@ -28,6 +26,8 @@ import {
 } from "three"
 import { FlyControls } from "three/examples/jsm/controls/FlyControls"
 import { Font, FontLoader } from "three/examples/jsm/loaders/FontLoader"
+import { IRenderer } from "."
+import { mod } from "../utils/math"
 import { UICallbacksFn } from "../pgv"
 
 /**
