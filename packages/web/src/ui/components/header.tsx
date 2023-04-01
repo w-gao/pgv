@@ -1,7 +1,7 @@
 import { effect } from "@preact/signals-core"
 import { useState } from "preact/hooks"
 import { GraphDesc } from "web/src/repo"
-import { useApplication } from "../contexts/application"
+import { usePGV } from "../contexts/application"
 import { FormSelect } from "./form"
 import "./header.scss"
 
@@ -9,7 +9,7 @@ import "./header.scss"
  * select box for the data source.
  */
 function SelectDataSource() {
-    const { app, config } = useApplication()
+    const { app, config } = usePGV()
     const repos = config.repos || []
 
     const changeSource = (src: string) => {
@@ -38,7 +38,7 @@ function SelectDataSource() {
  * select box for the vg file.
  */
 function SelectVgFile() {
-    const { app, graphsSignal } = useApplication()
+    const { app, graphsSignal } = usePGV()
 
     // use a local state to trigger re-renders because signals lazy load with arrays.
     const [graphs, setGraphs] = useState<GraphDesc[]>([])
@@ -83,7 +83,7 @@ export const Header = () => {
             <SelectDataSource />
             <SelectVgFile />
 
-            <hr />
+            {/* <hr />
 
             <div class="button-container">
                 <button title="KeyA">←</button>
@@ -109,7 +109,7 @@ export const Header = () => {
                 </div>
 
                 <div class="status-bar"></div>
-            </div>
+            </div> */}
         </div>
     )
 }

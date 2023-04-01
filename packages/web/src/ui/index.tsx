@@ -8,27 +8,33 @@ import { ApplicationProvider } from "./contexts/application"
 import "./style.css"
 
 /**
+ * The user interface.
  *
+ * This _should_ be the only place that interfaces with the DOM.
  */
 export class UI {
     private graphsSignal: Signal<GraphDesc[]>
 
-    constructor(id: string, app: PGV, config: Config) {
+    constructor(root: HTMLElement, app: PGV, config: Config) {
         this.graphsSignal = signal([])
 
-        const state = {
-            app: app,
-            config: config,
-            graphsSignal: this.graphsSignal,
-        }
         render(
-            <ApplicationProvider state={state}>
+            <ApplicationProvider
+                state={{
+                    app: app,
+                    config: config,
+                    graphsSignal: this.graphsSignal,
+                }}
+            >
                 <Header />
             </ApplicationProvider>,
-            document.getElementById(id) as HTMLElement
+            root
         )
     }
 
+    /**
+     * Update the graphs select box.
+     */
     updateGraphs(graphs: GraphDesc[]) {
         this.graphsSignal.value = graphs
     }

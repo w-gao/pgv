@@ -1,98 +1,11 @@
 import { UICallbacksFn, PGV } from "../pgv"
 
-function createFormGroupSelect(
-    id: string,
-    text: string,
-    options: { id: string; name: string }[],
-    defaultEmpty?: boolean,
-    onSelect?: (id: string) => void
-): HTMLDivElement {
-    /*
-        <div class="form-group">
-        <label for="{id}">{text}</label>
-        <select name="{id}" id="{id}">
-            {for entry : options}
-            <option value="{entry.id}">{entry.name}</option>
-            {endfor}
-        </select>
-        </div>
-    */
-    const div = document.createElement("div")
-    div.className = "form-group"
-
-    const label = document.createElement("label")
-    label.htmlFor = id
-    label.innerHTML = `${text}: `
-    div.appendChild(label)
-
-    const select = document.createElement("select")
-    select.name = id
-    select.id = id
-
-    if (defaultEmpty) {
-        let option = document.createElement("option")
-        option.disabled = true
-        option.selected = true
-        option.innerHTML = " - select - "
-        select.appendChild(option)
-    } else {
-        // Invoke the callback for the first element.
-        if (onSelect) {
-            let id = options[0].id
-            onSelect(id)
-        }
-    }
-
-    for (let entry of options) {
-        const option = document.createElement("option")
-        option.value = entry.id
-        option.innerHTML = entry.name
-        select.appendChild(option)
-    }
-
-    select.addEventListener("change", function () {
-        if (onSelect) {
-            let id = select.options[select.selectedIndex].value
-            onSelect(id)
-        } else {
-            console.log("detected change event to select box but no listener")
-        }
-    })
-
-    div.appendChild(select)
-    return div
-}
-
-function replaceFormGroupSelect(
-    element: HTMLDivElement,
-    options: { id: string; name: string }[],
-    defaultEmpty?: boolean
-) {
-    const select = element.querySelector("select")!
-
-    // remove all children
-    select.innerHTML = ""
-
-    if (defaultEmpty) {
-        let option = document.createElement("option")
-        option.disabled = true
-        option.selected = true
-        option.innerHTML = " - select - "
-        select.appendChild(option)
-    }
-
-    for (let entry of options) {
-        const option = document.createElement("option")
-        option.value = entry.id
-        option.innerHTML = entry.name
-        select.appendChild(option)
-    }
-}
-
+/**
+ * @deprecated
+ */
 export class Header implements UICallbacksFn {
     private element: HTMLDivElement
     private statusBarElement: HTMLDivElement
-    private vgFileElement: HTMLDivElement
 
     private numNodes?: number
     private numEdges?: number
@@ -104,29 +17,6 @@ export class Header implements UICallbacksFn {
     constructor(private app: PGV, private parent: HTMLElement) {
         this.element = document.createElement("div")
         this.element.setAttribute("class", "header")
-
-        // Add data sources
-        this.element.appendChild(
-            createFormGroupSelect(
-                "repo",
-                "data source",
-                app.config.repos || [],
-                false,
-                this.changeSource.bind(this)
-            )
-        )
-
-        this.vgFileElement = createFormGroupSelect(
-            "vg-file",
-            "vg file",
-            [],
-            true,
-            this.selectVgGraph.bind(this)
-        )
-        // this.vgFileElement.style.display = "none"
-        this.element.appendChild(this.vgFileElement)
-
-        this.element.appendChild(document.createElement("hr"))
 
         // Add navigation buttons.
         const buttonContainer = document.createElement("div")
@@ -186,41 +76,6 @@ export class Header implements UICallbacksFn {
         this.statusBarElement = document.createElement("div")
         this.statusBarElement.setAttribute("class", "status-bar")
         buttonContainer.appendChild(this.statusBarElement)
-    }
-
-    changeSource(src: string) {
-        console.log("changing source to " + src)
-
-        this.app
-            .switchRepo(src)
-            .then(repo => repo.getGraphDescs())
-            .then(descs => {
-                console.log(descs)
-
-                const graphs = []
-                for (let desc of descs) {
-                    graphs.push({
-                        id: desc.identifier,
-                        name: desc.name,
-                    })
-                }
-
-                // TODO: show a spinner and freeze UI?
-                replaceFormGroupSelect(this.vgFileElement, graphs, true)
-            })
-    }
-
-    async selectVgGraph(graph: string) {
-        console.log("selected graph: " + graph)
-
-        const repo = this.app.currentRepo!
-        const desc = await repo.getGraphDesc(graph)
-        const g = await repo.downloadGraph(graph)
-
-        console.log("graph:", g)
-        if (g !== null) {
-            this.app.render(desc!, g)
-        }
     }
 
     handleButtonClick(code: string) {

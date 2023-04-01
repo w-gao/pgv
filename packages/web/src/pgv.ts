@@ -77,12 +77,12 @@ export class PGV {
             this.repos.set(repoConfig.id, repo)
         }
 
+        // WIP: use the preact-based component system for the new UI.
+        this.ui = new UI(root, this, config)
+
         // inject UI components
         this.headerUI = new Header(this, root)
-        // this.headerUI.show()
-
-        // WIP: use the preact-based component system for the new UI.
-        this.ui = new UI("app", this, config)
+        this.headerUI.show()
 
         this.layout = new TubeMapLayout(root)
         this.renderer = new ThreeRenderer(root, this.headerUI as UICallbacksFn)

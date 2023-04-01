@@ -28,6 +28,6 @@ export function ApplicationProvider({
     )
 }
 
-export function useApplication() {
+export function usePGV() {
     return useContext(ApplicationContext)
 }
