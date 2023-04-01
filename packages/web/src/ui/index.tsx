@@ -1,18 +1,35 @@
+import { signal, Signal } from "@preact/signals-core"
 import { render } from "preact"
+import { Config } from "../config"
+import { PGV } from "../pgv"
+import { GraphDesc } from "../repo"
+import { Header } from "./components/header"
+import { ApplicationProvider } from "./contexts/application"
 import "./style.css"
 
-function App() {
-    return (
-        <>
-            <div>A</div>
-            <div>B</div>
-        </>
-    )
-}
-
 /**
- * Render app under the given ID.
+ *
  */
-export function renderApp(id?: string): void {
-    render(<App />, document.getElementById(id || "app") as HTMLElement)
+export class UI {
+    private graphsSignal: Signal<GraphDesc[]>
+
+    constructor(id: string, app: PGV, config: Config) {
+        this.graphsSignal = signal([])
+
+        const state = {
+            app: app,
+            config: config,
+            graphsSignal: this.graphsSignal,
+        }
+        render(
+            <ApplicationProvider state={state}>
+                <Header />
+            </ApplicationProvider>,
+            document.getElementById(id) as HTMLElement
+        )
+    }
+
+    updateGraphs(graphs: GraphDesc[]) {
+        this.graphsSignal.value = graphs
+    }
 }

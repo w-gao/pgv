@@ -1,0 +1,15 @@
+.form-group {
+    display: flex;
+    margin: 5px 0;
+
+    > select {
+        width: 200px;
+        height: 25px;
+        border: 1px #929292 solid;
+        border-radius: 3px;
+    }
+
+    > label {
+        width: 100px;
+    }
+}

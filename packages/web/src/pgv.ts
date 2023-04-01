@@ -1,38 +1,18 @@
 import { Graph } from "@pgv/core/src/model/vg"
+import { Config, setDefaultOptions } from "./config"
 import { ILayout } from "./layout"
 import { TubeMapLayout } from "./layout/tubemap"
 import { IRenderer } from "./renderer"
 import { ThreeRenderer } from "./renderer/three"
 import { GraphDesc, IRepo } from "./repo"
 import { ExampleDataRepo } from "./repo/local"
-import { renderApp } from "./ui"
+import { UI } from "./ui"
 import { Header } from "./ui/components"
-
-export type RepoConfig = {
-    type: "demo" | "api"
-    id: string
-    name: string
-    config?: any
-}
-
-export type Config = {
-    repos?: RepoConfig[]
-}
-
-function setDefaultOptions(config?: Config): Config {
-    if (config === undefined) {
-        config = {}
-    }
-
-    if (config.repos === undefined) {
-        config.repos = []
-    }
-
-    return config
-}
 
 /**
  * Functional interface for UI callbacks.
+ *
+ * @deprecated
  */
 export interface UICallbacksFn {
     // Status bar related.
@@ -74,6 +54,7 @@ export class PGV {
 
     readonly headerUI: Header
 
+    ui: UI
     layout: ILayout
     renderer: IRenderer
 
@@ -96,11 +77,12 @@ export class PGV {
             this.repos.set(repoConfig.id, repo)
         }
 
-        renderApp()
-
         // inject UI components
         this.headerUI = new Header(this, root)
-        this.headerUI.show()
+        // this.headerUI.show()
+
+        // WIP: use the preact-based component system for the new UI.
+        this.ui = new UI("app", this, config)
 
         this.layout = new TubeMapLayout(root)
         this.renderer = new ThreeRenderer(root, this.headerUI as UICallbacksFn)
