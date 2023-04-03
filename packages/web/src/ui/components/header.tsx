@@ -2,7 +2,7 @@ import { effect } from "@preact/signals-core"
 import { useState } from "preact/hooks"
 import { GraphDesc } from "../../repo"
 import { usePGV } from "../contexts"
-import { FormSelect } from "./form"
+import { FormSelect, ToolTip } from "./elements"
 import "./header.scss"
 
 /**
@@ -91,22 +91,19 @@ export function Header() {
                 <button title="ArrowUp">↑</button>
                 <button title="ArrowDown">↓</button>
 
-                <div class="tooltip">
-                    <div class="content">
-                        <p>
-                            Select a graph above and use the arrow keys on the
-                            left to navigate the graph, or use keyboard
-                            shortcuts:
-                        </p>
-                        <ul>
-                            <li>A and D: left and right</li>
-                            <li>W and S: forward and backward</li>
-                            <li>R and F: up and down</li>
-                            <li>↑ and ↓: cycle through paths</li>
-                            <li>hover to select node</li>
-                        </ul>
-                    </div>
-                </div>
+                <ToolTip>
+                    <p>
+                        Select a graph above and use the arrow keys on the left
+                        to navigate the graph, or use keyboard shortcuts:
+                    </p>
+                    <ul>
+                        <li>A and D: left and right</li>
+                        <li>W and S: forward and backward</li>
+                        <li>R and F: up and down</li>
+                        <li>↑ and ↓: cycle through paths</li>
+                        <li>hover to select node</li>
+                    </ul>
+                </ToolTip>
 
                 <div class="status-bar"></div>
             </div> */}

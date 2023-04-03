@@ -1,0 +1,66 @@
+// Used by Header component
+.form-group {
+    display: flex;
+    margin: 5px 0;
+
+    > select {
+        width: 200px;
+        height: 25px;
+        border: 1px #929292 solid;
+        border-radius: 3px;
+    }
+
+    > label {
+        width: 100px;
+    }
+}
+
+// ToolTip component
+.tooltip {
+  display: inline-block;
+  position: relative;
+
+  &::after {
+    display: inline-block;
+    cursor: pointer;
+    content: '?';
+    width: 20px;
+    height: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    background: #f0f0f0;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid;
+    border-radius: 50%;
+  }
+
+  > .content {
+    display: none;
+    position: absolute;
+    // top: 50%;
+    // left: 100%;
+    // transform: translate(0, -50%);
+    top: 40px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 999999;
+    padding: 10px;
+    background-color: #f0f0f0;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 14px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    box-shadow: 0 1px 5px rgb(0 0 0 / 50%);
+
+    min-width: 300px;
+    @media only screen and (max-width: 425px)  {
+      min-width: 200px;
+    }
+  }
+
+  &:hover > .content {
+    display: block;
+  }
+}

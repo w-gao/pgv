@@ -1,18 +1,19 @@
 import { useRef, useEffect } from "preact/hooks"
-import "./form.scss"
+import { ComponentChildren } from "preact"
+import "./elements.scss"
 
-interface IProps {
+// This file contains all the reusable UI elements of PGV.
+
+/**
+ * select box component.
+ */
+export function FormSelect(props: {
     id: string
     text: string
     options: { id: string; name: string }[]
     defaultEmpty?: boolean
     onSelect?: (id: string) => void
-}
-
-/**
- * select box component.
- */
-export function FormSelect(props: IProps) {
+}) {
     const { id, text, options, defaultEmpty, onSelect } = props
     const selectRef = useRef<HTMLSelectElement>(null)
 
@@ -64,6 +65,19 @@ export function FormSelect(props: IProps) {
                     <option value={id}>{name}</option>
                 ))}
             </select>
+        </div>
+    )
+}
+
+/**
+ * A small UI element that shows the children as a tooltip message on hover.
+ *
+ * Useful for displaying help information.
+ */
+export function ToolTip(props: { children: ComponentChildren }) {
+    return (
+        <div class="tooltip">
+            <div class="content">{props.children}</div>
         </div>
     )
 }

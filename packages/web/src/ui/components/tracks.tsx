@@ -9,6 +9,9 @@ import "./tracks.scss"
 export function Tracks() {
     const ref = useRef<HTMLDivElement>(null)
 
+    // TODO: the tracks signal should support add, reorder, and remove operations.
+    //   It should probably also take in JSX components.
+
     const { tracksSignal } = usePGV()
     effect(() => {
         if (tracksSignal.value && ref.current) {

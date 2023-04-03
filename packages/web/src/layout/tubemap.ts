@@ -10,6 +10,9 @@ import { UI } from "../ui"
 export class TubeMapLayout implements ILayout {
     name: string
 
+    /**
+     * @param ui Take in the UI to display the tube-map as a track.
+     */
     constructor(ui: UI) {
         this.name = "tubemap"
 
