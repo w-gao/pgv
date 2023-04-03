@@ -27,6 +27,7 @@ import {
 import { FlyControls } from "three/examples/jsm/controls/FlyControls"
 import { Font, FontLoader } from "three/examples/jsm/loaders/FontLoader"
 import { IRenderer } from "."
+import { UI } from "../ui"
 import { mod } from "../utils/math"
 import { UICallbacksFn } from "../pgv"
 
@@ -77,11 +78,15 @@ export class ThreeRenderer implements IRenderer {
     private nodeInfos: Map<string, NodeInfo> = new Map()
     private nodeCoords: Map<string, NodeCoord> = new Map()
 
-    constructor(parent: HTMLElement, private uiCallbackFn: UICallbacksFn) {
+    constructor(ui: UI, private uiCallbackFn: UICallbacksFn) {
+        // TODO: use UI instead of UICallbacksFn.
+
         // Create canvas container.
         const divElement = document.createElement("div")
         divElement.setAttribute("style", "width: 100%; height: 500px")
-        parent.appendChild(divElement)
+
+        // Add this container as a track to the PGV UI.
+        ui.addTrack(divElement)
 
         const width = divElement.clientWidth
         const height = divElement.clientHeight

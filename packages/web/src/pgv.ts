@@ -82,8 +82,11 @@ export class PGV {
         this.headerUI.show()
 
         // For now, config.layout === "tubemap" and config.renderer === "three".
-        this.layout = new TubeMapLayout(root)
-        this.renderer = new ThreeRenderer(root, this.headerUI as UICallbacksFn)
+        this.layout = new TubeMapLayout(this.ui)
+        this.renderer = new ThreeRenderer(
+            this.ui,
+            this.headerUI as UICallbacksFn
+        )
 
         // TODO: we ought show spinner and hide UI when this is loading, but this is fairly quick at the moment.
         if (this.renderer instanceof ThreeRenderer) {

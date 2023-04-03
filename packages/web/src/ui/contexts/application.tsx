@@ -1,8 +1,7 @@
 import { ComponentChildren, createContext } from "preact"
 import { useContext } from "preact/hooks"
 import { Signal } from "@preact/signals-core"
-import { PGV } from "../../pgv"
-import { Config } from "../../config"
+import { Config, PGV } from "../.."
 import { GraphDesc } from "../../repo"
 
 interface AppState {
@@ -10,6 +9,7 @@ interface AppState {
     config: Config
 
     graphsSignal: Signal<GraphDesc[]>
+    tracksSignal: Signal<Element | null>
 }
 
 const ApplicationContext = createContext<AppState>({} as AppState)
