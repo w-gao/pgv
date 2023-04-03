@@ -83,9 +83,9 @@ export function Header() {
             <SelectDataSource />
             <SelectVgFile />
 
-            {/* <hr />
+            <hr />
 
-            <div class="button-container">
+            <div class="header__nav-container">
                 <button title="KeyA">←</button>
                 <button title="KeyD">→</button>
                 <button title="ArrowUp">↑</button>
@@ -104,9 +104,9 @@ export function Header() {
                         <li>hover to select node</li>
                     </ul>
                 </ToolTip>
+            </div>
 
-                <div class="status-bar"></div>
-            </div> */}
+            <div class="header__status-bar">{/* To be populated... */}</div>
         </div>
     )
 }

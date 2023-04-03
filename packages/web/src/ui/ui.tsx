@@ -3,7 +3,7 @@ import { render } from "preact"
 import { Config, PGV } from ".."
 import { GraphDesc } from "../repo"
 import { Header, Tracks } from "./components"
-import { ApplicationProvider } from "./contexts"
+import { ApplicationProvider, StatusBarUpdate } from "./contexts"
 import "./style.css"
 
 function Settings() {
@@ -15,6 +15,23 @@ function Footer() {
 }
 
 /**
+ * Represents a "track".
+ */
+export interface Track {
+    /**
+     * Returns the DOM element that is injected into the UI.
+     */
+    getElement(): Element
+
+    /**
+     * An event to update the view triggered by user (UI or keyboard).
+     *
+     * The track doesn't have to handle this event.
+     */
+    updateRegion(region: string): void
+}
+
+/**
  * The user interface.
  *
  * This _should_ be the only place that interfaces with the DOM.
@@ -22,11 +39,13 @@ function Footer() {
 export class UI {
     private graphsSignal: Signal<GraphDesc[]>
     private tracksSignal: Signal<Element | null>
+    private statusBarSignal: Signal<StatusBarUpdate>
 
     // TODO: the UI shouldn't take in the app; instead, the app should register events.
     constructor(root: HTMLElement, app: PGV, config: Config) {
         this.graphsSignal = signal([])
         this.tracksSignal = signal(null)
+        this.statusBarSignal = signal<StatusBarUpdate>({})
 
         render(
             <ApplicationProvider
@@ -35,6 +54,7 @@ export class UI {
                     config: config,
                     graphsSignal: this.graphsSignal,
                     tracksSignal: this.tracksSignal,
+                    statusBarSignal: this.statusBarSignal,
                 }}
             >
                 <Header />
