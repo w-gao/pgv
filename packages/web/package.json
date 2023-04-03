@@ -1,6 +1,6 @@
 {
   "name": "@pgv/web",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "author": "William Gao <wlgao@ucsc.edu>",
   "license": "MIT",
