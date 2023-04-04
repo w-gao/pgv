@@ -25,6 +25,8 @@ jobs:
         uses: actions/setup-node@v3
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+      - name: Inspect
+        run: env
       - name: Run prebuild script
         run: ./scripts/prebuild.sh
       - name: Build core
