@@ -17,7 +17,7 @@ export function Footer() {
     const [env, setEnv] = useState()
 
     useEffect(() => {
-        fetch("/env.json")
+        fetch("env.json")
             .then(resp => resp.json())
             .then(resp => setEnv(resp))
             .catch(() => {
