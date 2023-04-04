@@ -16,7 +16,7 @@ permissions:
 concurrency: preview-${{ github.ref }}
 
 jobs:
-  build:
+  deploy-preview:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -30,36 +30,9 @@ jobs:
         run: yarn core:build
       - name: Build web
         run: yarn web:build --base /pgv
-      - name: Upload production artifact
-        uses: actions/upload-artifact@v3
+      - uses: rossjrw/pr-preview-action@v1
         with:
-          name: dist
-          path: ./packages/web/dist
-  deploy-preview:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: dist
-          path: .
-      - name: Inspect
-        run: ls -al
-      - name: Setup Pages
-        uses: actions/configure-pages@v1
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: .
-      - name: Deploy preview to GitHub Pages
-        id: deployment
-        uses: rossjrw/pr-preview-action@v1
-        with:
-          source-dir: .
+          source-dir: ./packages/web/dist
           preview-branch: main
           umbrella-dir: pr-preview
           action: auto
