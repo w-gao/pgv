@@ -35,6 +35,10 @@ export interface Track {
 /**
  * The user interface.
  *
+ * Use the method calls to update the values on the UI.
+ *
+ * Register events to handle user input from the UI. (WIP)
+ *
  * This _should_ be the only place that interfaces with the DOM.
  */
 export class UI {
@@ -75,6 +79,8 @@ export class UI {
         )
     }
 
+    // Header
+
     /**
      * Update the graphs select box.
      */
@@ -82,7 +88,7 @@ export class UI {
         this.graphsSignal.value = graphs
     }
 
-    // TODO: move to StatusBar object
+    // Header - Status bar
 
     updateNodes(nodes: number | undefined): void {
         this.statusBarSignals.nodes.value = nodes
@@ -150,6 +156,8 @@ export class UI {
             }
         })
     }
+
+    // Tracks
 
     /**
      * Add an HTML element as a new track to the UI.
