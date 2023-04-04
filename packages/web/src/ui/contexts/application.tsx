@@ -4,6 +4,7 @@ import { Signal } from "@preact/signals-core"
 import { Config } from "../../config"
 import { PGV } from "../../pgv"
 import { GraphDesc } from "../../repo"
+import { UI } from "../ui"
 
 /**
  * Signals to update the status bar.
@@ -23,6 +24,7 @@ export interface StatusBarUpdateSignals {
 
 export interface AppState {
     app: PGV
+    ui: UI
     config: Config
 
     // Headers

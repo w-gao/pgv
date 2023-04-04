@@ -9,7 +9,7 @@ import "./header.scss"
  * select box for the data source.
  */
 function SelectDataSource() {
-    const { app, config } = usePGV()
+    const { app, ui, config } = usePGV()
     const repos = config.repos || []
 
     const changeSource = (src: string) => {
@@ -19,7 +19,7 @@ function SelectDataSource() {
         app.switchRepo(src)
             .then(repo => repo.getGraphDescs())
             .then(descs => {
-                app.ui.updateGraphs(descs)
+                ui.updateGraphs(descs)
             })
     }
 

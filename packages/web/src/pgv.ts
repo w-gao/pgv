@@ -9,27 +9,31 @@ import { UI } from "./ui"
  * Represents an instance of the PGV app.
  */
 export class PGV {
-    readonly config: Config
+    private readonly _config: Config
 
     /**
      * A list of available data sources.
      */
-    private readonly repos: Map<string, IRepo>
+    private readonly _repos: Map<string, IRepo>
 
     /**
      * The currently active repo.
      */
-    currentRepo?: IRepo
+    private _currentRepo?: IRepo
 
-    readonly ui: UI
-    readonly layout: ILayout
-    readonly renderer: IRenderer
+    public get currentRepo() {
+        return this._currentRepo
+    }
+
+    private readonly _ui: UI
+    private readonly _layout: ILayout
+    private readonly _renderer: IRenderer
 
     constructor(root: HTMLElement, config?: Partial<Config>) {
-        this.config = setDefaultOptions(config)
+        this._config = setDefaultOptions(config)
 
-        this.repos = new Map()
-        for (let repoConfig of this.config.repos) {
+        this._repos = new Map()
+        for (let repoConfig of this._config.repos) {
             let repo
             switch (repoConfig.type) {
                 case "demo":
@@ -39,19 +43,19 @@ export class PGV {
                         repoConfig.config
                     )
             }
-            this.repos.set(repoConfig.id, repo)
+            this._repos.set(repoConfig.id, repo)
         }
 
         // The UI: preact-based component system.
-        this.ui = new UI(root, this, this.config)
+        this._ui = new UI(root, this, this._config)
 
         // For now, config.layout === "tubemap" and config.renderer === "three".
-        this.layout = new TubeMapLayout(this.ui)
-        this.renderer = new ThreeRenderer(this.ui)
+        this._layout = new TubeMapLayout(this._ui)
+        this._renderer = new ThreeRenderer(this._ui)
 
         // TODO: we ought show spinner and hide UI when this is loading, but this is fairly quick at the moment.
-        if (this.renderer instanceof ThreeRenderer) {
-            this.renderer.initialize().then(() => {
+        if (this._renderer instanceof ThreeRenderer) {
+            this._renderer.initialize().then(() => {
                 console.log("renderer loaded")
             })
         }
@@ -63,35 +67,35 @@ export class PGV {
      * @param key The string identifier of the repo.
      */
     async switchRepo(key: string): Promise<IRepo> {
-        if (this.currentRepo !== undefined) {
-            this.layout.reset()
-            this.renderer.clear()
+        if (this._currentRepo !== undefined) {
+            this._layout.reset()
+            this._renderer.clear()
             // this.currentRepo.disconnect()
         }
 
-        let repo = this.repos.get(key)
+        let repo = this._repos.get(key)
         if (!repo) {
             return Promise.reject("weird... repo is gone")
         }
 
         await repo.connect()
-        this.currentRepo = repo
+        this._currentRepo = repo
         return repo
     }
 
     render(desc: GraphDesc, graph: Graph) {
         // Clear whatever we might have.
-        this.renderer.clear()
+        this._renderer.clear()
 
-        this.ui.updateRegion(desc.region)
+        this._ui.updateRegion(desc.region)
 
         // Apply the layout.
-        const g = this.layout.apply(graph)
+        const g = this._layout.apply(graph)
 
         // Render the graph.
-        this.renderer.drawGraph(g.nodes, g.edges, undefined)
+        this._renderer.drawGraph(g.nodes, g.edges, undefined)
 
         // Draw the paths.
-        this.renderer.drawPaths(g.paths)
+        this._renderer.drawPaths(g.paths)
     }
 }

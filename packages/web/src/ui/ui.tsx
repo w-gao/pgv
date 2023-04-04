@@ -64,6 +64,7 @@ export class UI {
             <ApplicationProvider
                 state={{
                     app: app,
+                    ui: this,
                     config: config,
                     graphsSignal: this.graphsSignal,
                     statusBarSignals: this.statusBarSignals,
