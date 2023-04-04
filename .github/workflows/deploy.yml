@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Run prebuild script
-        run: ./prebuild.sh
+        run: ./scripts/prebuild.sh
       - name: Build core
         run: yarn core:build
       - name: Build web
