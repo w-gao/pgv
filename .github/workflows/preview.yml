@@ -32,7 +32,7 @@ jobs:
       - name: Build core
         run: yarn core:build
       - name: Build web
-        run: yarn web:build --base /pgv
+        run: yarn web:build --base /pgv/pr-preview/pr-1
       - uses: rossjrw/pr-preview-action@v1
         with:
           source-dir: ./packages/web/dist
