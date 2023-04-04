@@ -28,8 +28,8 @@ RUN wget -O /usr/local/bin/vg "https://github.com/vgteam/vg/releases/download/${
 EXPOSE 8000
 
 # Set up nginx
-COPY docker/nginx.conf /etc/nginx/sites-enabled/default
-COPY docker/start.sh start.sh
+COPY scripts/docker/nginx.conf /etc/nginx/sites-enabled/default
+COPY scripts/docker/start.sh start.sh
 
 # Copy over build files
 COPY ./packages/web/dist ./ui

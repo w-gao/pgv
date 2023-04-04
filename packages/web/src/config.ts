@@ -12,6 +12,12 @@ export type Config = {
     debug: boolean
 
     /**
+     * Whether the app is embedded in another webpage or not. Set to true to
+     * hide components like the footer.
+     */
+    embedded: boolean
+
+    /**
      * List of repository configurations.
      */
     repos: RepoConfig[]
@@ -34,6 +40,10 @@ export function setDefaultOptions(config?: Partial<Config>): Config {
 
     if (config.debug === undefined) {
         config.debug = false
+    }
+
+    if (config.embedded === undefined) {
+        config.embedded = false
     }
 
     if (config.repos === undefined) {
