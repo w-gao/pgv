@@ -1,5 +1,4 @@
 import { PGV } from "./pgv"
-import "./style.css"
 
 /**
  * Main entry.
@@ -12,6 +11,7 @@ import "./style.css"
     }
 
     const app = new PGV(root, {
+        debug: true,
         repos: [
             {
                 type: "demo",
@@ -27,6 +27,9 @@ import "./style.css"
             //     name: "local server",
             // },
         ],
+        layout: "tubemap",
+        renderer: "three",
     })
+
     console.log(app)
 })()

@@ -1,88 +1,39 @@
 import { Graph } from "@pgv/core/src/model/vg"
-import { ILayout } from "./layout"
-import { TubeMapLayout } from "./layout/tubemap"
-import { IRenderer } from "./renderer"
-import { ThreeRenderer } from "./renderer/three"
-import { GraphDesc, IRepo } from "./repo"
-import { ExampleDataRepo } from "./repo/local"
-import { Header } from "./ui/components"
-
-export type RepoConfig = {
-    type: "demo" | "api"
-    id: string
-    name: string
-    config?: any
-}
-
-export type Config = {
-    repos?: RepoConfig[]
-}
-
-function setDefaultOptions(config?: Config): Config {
-    if (config === undefined) {
-        config = {}
-    }
-
-    if (config.repos === undefined) {
-        config.repos = []
-    }
-
-    return config
-}
-
-/**
- * Functional interface for UI callbacks.
- */
-export interface UICallbacksFn {
-    // Status bar related.
-    updateNodes(nodes: number | undefined, silent?: boolean): void
-    updateEdges(edges: number | undefined, silent?: boolean): void
-    updatePaths(paths: number | undefined, silent?: boolean): void
-    updateSelectedPath(
-        // [index, name]
-        path: [number, string] | undefined,
-        silent?: boolean
-    ): void
-    updateRegion(region: string | undefined, silent?: boolean): void
-
-    updateSelectedNode(
-        // [nodeID, seqLen, numPaths]
-        node: [string, number, number] | undefined,
-        silent?: boolean
-    ): void
-
-    // Force update.
-    updateStatusBar(): void
-}
+import { Config, setDefaultOptions } from "./config"
+import { ILayout, TubeMapLayout } from "./layout"
+import { IRenderer, ThreeRenderer } from "./renderer"
+import { GraphDesc, IRepo, ExampleDataRepo } from "./repo"
+import { UI } from "./ui"
 
 /**
  * Represents an instance of the PGV app.
  */
 export class PGV {
-    readonly config: Config
+    private readonly _config: Config
 
     /**
      * A list of available data sources.
      */
-    private readonly repos: Map<string, IRepo>
+    private readonly _repos: Map<string, IRepo>
 
     /**
      * The currently active repo.
      */
-    currentRepo?: IRepo
+    private _currentRepo?: IRepo
 
-    readonly headerUI: Header
+    public get currentRepo() {
+        return this._currentRepo
+    }
 
-    layout: ILayout
-    renderer: IRenderer
+    private readonly _ui: UI
+    private readonly _layout: ILayout
+    private readonly _renderer: IRenderer
 
-    constructor(root: HTMLElement, config?: Config) {
-        // process config
-        config = setDefaultOptions(config)
-        this.config = config
+    constructor(root: HTMLElement, config?: Partial<Config>) {
+        this._config = setDefaultOptions(config)
 
-        this.repos = new Map()
-        for (let repoConfig of this.config.repos || []) {
+        this._repos = new Map()
+        for (let repoConfig of this._config.repos) {
             let repo
             switch (repoConfig.type) {
                 case "demo":
@@ -92,19 +43,19 @@ export class PGV {
                         repoConfig.config
                     )
             }
-            this.repos.set(repoConfig.id, repo)
+            this._repos.set(repoConfig.id, repo)
         }
 
-        // inject UI components
-        this.headerUI = new Header(this, root)
-        this.headerUI.show()
+        // The UI: preact-based component system.
+        this._ui = new UI(root, this, this._config)
 
-        this.layout = new TubeMapLayout(root)
-        this.renderer = new ThreeRenderer(root, this.headerUI as UICallbacksFn)
+        // For now, config.layout === "tubemap" and config.renderer === "three".
+        this._layout = new TubeMapLayout(this._ui)
+        this._renderer = new ThreeRenderer(this._ui)
 
-        // TODO: we ought show spinner and hide UI when this is loading, but this is fairly quick at the moment.
-        if (this.renderer instanceof ThreeRenderer) {
-            this.renderer.initialize().then(() => {
+        // TODO: we ought to show spinner and hide UI when this is loading, but this is fairly quick at the moment.
+        if (this._renderer instanceof ThreeRenderer) {
+            this._renderer.initialize().then(() => {
                 console.log("renderer loaded")
             })
         }
@@ -116,35 +67,35 @@ export class PGV {
      * @param key The string identifier of the repo.
      */
     async switchRepo(key: string): Promise<IRepo> {
-        if (this.currentRepo !== undefined) {
-            this.layout.reset()
-            this.renderer.clear()
+        if (this._currentRepo !== undefined) {
+            this._layout.reset()
+            this._renderer.clear()
             // this.currentRepo.disconnect()
         }
 
-        let repo = this.repos.get(key)
+        let repo = this._repos.get(key)
         if (!repo) {
             return Promise.reject("weird... repo is gone")
         }
 
         await repo.connect()
-        this.currentRepo = repo
+        this._currentRepo = repo
         return repo
     }
 
     render(desc: GraphDesc, graph: Graph) {
         // Clear whatever we might have.
-        this.renderer.clear()
+        this._renderer.clear()
 
-        this.headerUI.updateRegion(desc.region)
+        this._ui.updateRegion(desc.region)
 
         // Apply the layout.
-        const g = this.layout.apply(graph)
+        const g = this._layout.apply(graph)
 
         // Render the graph.
-        this.renderer.drawGraph(g.nodes, g.edges, undefined)
+        this._renderer.drawGraph(g.nodes, g.edges, undefined)
 
         // Draw the paths.
-        this.renderer.drawPaths(g.paths)
+        this._renderer.drawPaths(g.paths)
     }
 }

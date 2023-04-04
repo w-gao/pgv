@@ -2,6 +2,7 @@ import { Graph } from "@pgv/core/src/model/vg"
 import { PGVGraph, PGVNode } from "@pgv/core/src/model"
 import { ILayout } from "."
 import { createLayout, vgExtractNodes, vgExtractTracks } from "../lib/tubemap"
+import { UI } from "../ui"
 
 /**
  * Use sequence-tube-map as the underlying layout structure.
@@ -9,7 +10,10 @@ import { createLayout, vgExtractNodes, vgExtractTracks } from "../lib/tubemap"
 export class TubeMapLayout implements ILayout {
     name: string
 
-    constructor(parent: HTMLElement) {
+    /**
+     * @param ui Take in the UI to display the tube-map as a track.
+     */
+    constructor(ui: UI) {
         this.name = "tubemap"
 
         const svgElement = document.createElementNS(
@@ -18,7 +22,7 @@ export class TubeMapLayout implements ILayout {
         )
         svgElement.id = "tubeMapSVG"
         svgElement.setAttribute("style", "width: 100%;")
-        parent.appendChild(svgElement)
+        ui.addTrack(svgElement)
     }
 
     apply(g: Graph): PGVGraph {

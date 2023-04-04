@@ -1,6 +1,6 @@
 {
   "name": "pgv",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -15,7 +15,8 @@
     "web:preview": "yarn workspace @pgv/web preview --port 8000",
     "core:dev": "yarn workspace @pgv/core dev",
     "core:build": "yarn workspace @pgv/core build",
-    "lint": "eslint 'packages/**/{src,__tests__}/**/*.{js,jsx,ts,tsx}'",
+    "lint:ts": "eslint 'packages/**/{src,__tests__}/**/*.{js,jsx,ts,tsx}'",
+    "lint:css": "stylelint --allow-empty-input 'packages/**/src/**/*.{css,scss}'",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
@@ -27,6 +28,8 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.3",
+    "stylelint": "^15.4.0",
+    "stylelint-config-standard-scss": "^7.0.1",
     "typescript": "^4.9.4",
     "vitest": "^0.27.3"
   }

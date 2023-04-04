@@ -39,7 +39,9 @@ export function generateLayout() {
 
     // early exit is necessary when visualization options such as colors are
     // changed before any graph has been rendered
-    if (inputNodes.length === 0 || inputTracks.length === 0) return
+    if (inputNodes.length === 0 || inputTracks.length === 0) {
+        return
+    }
 
     straightenTrack(0)
     nodes = JSON.parse(JSON.stringify(inputNodes)) // deep copy (can add stuff to copy and leave original unchanged)
@@ -63,29 +65,39 @@ export function generateLayout() {
             trackForRuler = tracks[i].name
         }
     }
-    if (tracks.length === 0) return
+    if (tracks.length === 0) {
+        return
+    }
 
     nodeMap = generateNodeMap(nodes)
     generateTrackIndexSequences(tracks)
-    if (reads && config.showReads) generateTrackIndexSequences(reads)
+    if (reads && config.showReads) {
+        generateTrackIndexSequences(reads)
+    }
     generateNodeWidth()
 
     if (config.mergeNodesFlag) {
         generateNodeSuccessors() // requires indexSequence
         generateNodeOrder() // requires successors
-        if (reads && config.showReads) reverseReversedReads()
+        if (reads && config.showReads) {
+            reverseReversedReads()
+        }
         mergeNodes()
         nodeMap = generateNodeMap(nodes)
         generateNodeWidth()
         generateTrackIndexSequences(tracks)
-        if (reads && config.showReads) generateTrackIndexSequences(reads)
+        if (reads && config.showReads) {
+            generateTrackIndexSequences(reads)
+        }
     }
 
     numberOfNodes = nodes.length
     numberOfTracks = tracks.length
     generateNodeSuccessors()
     generateNodeDegree()
-    if (DEBUG) console.log(`${numberOfNodes} nodes.`)
+    if (DEBUG) {
+        console.log(`${numberOfNodes} nodes.`)
+    }
     generateNodeOrder()
     maxOrder = getMaxOrder()
 
@@ -98,7 +110,9 @@ export function generateLayout() {
     calculateTrackWidth(tracks)
     generateLaneAssignment()
 
-    if (config.showExonsFlag === true && bed !== null) addTrackFeatures()
+    if (config.showExonsFlag === true && bed !== null) {
+        addTrackFeatures()
+    }
     generateNodeXCoords()
 
     if (reads && config.showReads) {
@@ -125,9 +139,9 @@ export function generateLayout() {
         console.log("Lane assignment:")
         console.log(assignments)
     }
-    getImageDimensions();
-    alignSVG(nodes, tracks);
-    defineSVGPatterns();
+    getImageDimensions()
+    alignSVG(nodes, tracks)
+    defineSVGPatterns()
 
     drawTrackRectangles(trackRectangles)
     drawTrackCurves()
@@ -140,9 +154,13 @@ export function generateLayout() {
     const dNodes = removeUnusedNodes(nodes)
     drawReversalsByColor(trackCorners, trackVerticalRectangles, "read")
     drawNodes(dNodes)
-    if (config.nodeWidthOption === 0) drawLabels(dNodes)
+    if (config.nodeWidthOption === 0) {
+        drawLabels(dNodes)
+    }
     // if (trackForRuler !== undefined) drawRuler()
-    if (config.nodeWidthOption === 0) drawMismatches() // TODO: call this before drawLabels and fix d3 data/append/enter stuff
+    if (config.nodeWidthOption === 0) {
+        drawMismatches()
+    } // TODO: call this before drawLabels and fix d3 data/append/enter stuff
     if (DEBUG) {
         console.log(`number of tracks: ${numberOfTracks}`)
         console.log(`number of nodes: ${numberOfNodes}`)

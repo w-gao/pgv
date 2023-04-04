@@ -1,6 +1,4 @@
 import { PGVNode, Edge, Path } from "@pgv/core/src/model"
-import { IRenderer } from "."
-import { mod } from "../utils/math"
 import {
     Scene,
     PerspectiveCamera,
@@ -28,7 +26,9 @@ import {
 } from "three"
 import { FlyControls } from "three/examples/jsm/controls/FlyControls"
 import { Font, FontLoader } from "three/examples/jsm/loaders/FontLoader"
-import { UICallbacksFn } from "../pgv"
+import { IRenderer } from "."
+import { UI } from "../ui"
+import { mod } from "../utils/math"
 
 /**
  * Represent the coordinates and size of a node.
@@ -77,11 +77,13 @@ export class ThreeRenderer implements IRenderer {
     private nodeInfos: Map<string, NodeInfo> = new Map()
     private nodeCoords: Map<string, NodeCoord> = new Map()
 
-    constructor(parent: HTMLElement, private uiCallbackFn: UICallbacksFn) {
+    constructor(private ui: UI) {
         // Create canvas container.
         const divElement = document.createElement("div")
         divElement.setAttribute("style", "width: 100%; height: 500px")
-        parent.appendChild(divElement)
+
+        // Add this container as a track to the PGV UI.
+        this.ui.addTrack(divElement)
 
         const width = divElement.clientWidth
         const height = divElement.clientHeight
@@ -151,7 +153,7 @@ export class ThreeRenderer implements IRenderer {
             selectedObject.material.color.set("#add8e6")
             selectedObject = null
             this.activeNodeId = undefined
-            this.uiCallbackFn.updateSelectedNode(undefined)
+            this.ui.updateSelectedNode(undefined)
         }
 
         const pointermove = (ev: PointerEvent) => {
@@ -184,7 +186,7 @@ export class ThreeRenderer implements IRenderer {
                     selectedObject.material.color.set("#fe2222")
 
                     this.activeNodeId = nodeID
-                    this.uiCallbackFn.updateSelectedNode([
+                    this.ui.updateSelectedNode([
                         nodeInfo.id,
                         nodeInfo.seqLength,
                         nodeInfo.numPaths,
@@ -277,9 +279,10 @@ export class ThreeRenderer implements IRenderer {
     drawGraph(nodes: PGVNode[], edges: Edge[], _refPaths?: Path[]): void {
         this.active = true
 
-        this.uiCallbackFn.updateNodes(nodes.length, false)
-        this.uiCallbackFn.updateEdges(edges.length, false)
-        this.uiCallbackFn.updateStatusBar()
+        this.ui.updateBatched({
+            nodes: nodes.length,
+            edges: edges.length,
+        })
 
         console.log("drawGraph()")
         console.log(JSON.stringify(nodes, undefined, 4))
@@ -413,7 +416,7 @@ export class ThreeRenderer implements IRenderer {
     }
 
     drawPaths(paths: Path[]): void {
-        this.uiCallbackFn.updatePaths(paths.length)
+        this.ui.updatePaths(paths.length)
 
         let counter = 0
         const color = new Color()
@@ -469,12 +472,14 @@ export class ThreeRenderer implements IRenderer {
         this.nodeInfos.clear()
         this.nodeCoords.clear()
 
-        this.uiCallbackFn.updateNodes(undefined, false)
-        this.uiCallbackFn.updateEdges(undefined, false)
-        this.uiCallbackFn.updatePaths(undefined, false)
-        this.uiCallbackFn.updateSelectedPath(undefined, false)
-        this.uiCallbackFn.updateRegion(undefined, false)
-        this.uiCallbackFn.updateStatusBar()
+        this.ui.updateBatched({
+            nodes: null,
+            edges: null,
+            paths: null,
+            region: null,
+            selectedPath: null,
+            selectedNode: null,
+        })
 
         while (this.scene.children.length > 0) {
             this.scene.remove(this.scene.children[0])
@@ -502,7 +507,7 @@ export class ThreeRenderer implements IRenderer {
         this.activePathIndex = index
 
         if (index === 0) {
-            this.uiCallbackFn.updateSelectedPath([0, "none"])
+            this.ui.updateSelectedPath([0, "none"])
             return
         }
 
@@ -516,6 +521,6 @@ export class ThreeRenderer implements IRenderer {
             }
         }
 
-        this.uiCallbackFn.updateSelectedPath([index, this.pathNames[index - 1]])
+        this.ui.updateSelectedPath([index, this.pathNames[index - 1]])
     }
 }
