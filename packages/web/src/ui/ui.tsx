@@ -16,7 +16,7 @@ function Footer() {
 }
 
 /**
- * Represents a "track".
+ * Represents a "track" that can be displayed in the UI.
  */
 export interface Track {
     /**

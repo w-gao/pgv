@@ -4,7 +4,6 @@ import { ILayout, TubeMapLayout } from "./layout"
 import { IRenderer, ThreeRenderer } from "./renderer"
 import { GraphDesc, IRepo, ExampleDataRepo } from "./repo"
 import { UI } from "./ui"
-import { Header } from "./ui/deprecated"
 
 /**
  * Represents an instance of the PGV app.
@@ -22,19 +21,15 @@ export class PGV {
      */
     currentRepo?: IRepo
 
-    readonly headerUI: Header
+    readonly ui: UI
+    readonly layout: ILayout
+    readonly renderer: IRenderer
 
-    ui: UI
-    layout: ILayout
-    renderer: IRenderer
-
-    constructor(root: HTMLElement, config?: Config) {
-        // process config
-        config = setDefaultOptions(config)
-        this.config = config
+    constructor(root: HTMLElement, config?: Partial<Config>) {
+        this.config = setDefaultOptions(config)
 
         this.repos = new Map()
-        for (let repoConfig of this.config.repos || []) {
+        for (let repoConfig of this.config.repos) {
             let repo
             switch (repoConfig.type) {
                 case "demo":
@@ -47,12 +42,8 @@ export class PGV {
             this.repos.set(repoConfig.id, repo)
         }
 
-        // WIP: use the preact-based component system for the new UI.
-        this.ui = new UI(root, this, config)
-
-        // inject UI components
-        this.headerUI = new Header(this, root)
-        this.headerUI.show()
+        // The UI: preact-based component system.
+        this.ui = new UI(root, this, this.config)
 
         // For now, config.layout === "tubemap" and config.renderer === "three".
         this.layout = new TubeMapLayout(this.ui)

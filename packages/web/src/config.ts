@@ -9,25 +9,25 @@ export type Config = {
     /**
      * Enable debug logging, etc.
      */
-    debug?: boolean
+    debug: boolean
 
     /**
      * List of repository configurations.
      */
-    repos?: RepoConfig[]
+    repos: RepoConfig[]
 
     /**
      * The layout engine.
      */
-    layout?: "tubemap"
+    layout: "tubemap"
 
     /**
      * The renderer.
      */
-    renderer?: "three"
+    renderer: "three"
 }
 
-export function setDefaultOptions(config?: Config): Config {
+export function setDefaultOptions(config?: Partial<Config>): Config {
     if (config === undefined) {
         config = {}
     }
@@ -48,5 +48,5 @@ export function setDefaultOptions(config?: Config): Config {
         config.renderer = "three"
     }
 
-    return config
+    return config as Config
 }

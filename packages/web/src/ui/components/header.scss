@@ -18,15 +18,31 @@
 
     &__status-bar {
         display: flex;
-        flex-direction: row;
+        flex-flow: row wrap;
         font-size: 14px;
 
-        > span {
+        &__entry {
+            > span {
+                font-weight: bold;
+            }
+    
             &:not(:last-child)::after {
                 content: '-';
                 margin: 0 8px;
                 color: #929292;
-              }
+            }
+        }
+
+        // On even smaller screens, it might be cleaner to display this vertically.
+        @media only screen and (max-width: 425px)  {
+            flex-direction: column;
+
+            &__entry {
+                &:not(:last-child)::after {
+                    content: '';
+                    margin: 0;
+                }
+            }
         }
     }
 }

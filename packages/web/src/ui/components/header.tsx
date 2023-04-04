@@ -77,6 +77,49 @@ function SelectVgFile() {
     )
 }
 
+/**
+ * navigation buttons.
+ */
+function NavContainer() {
+    const onClick = (code: string) => {
+        window.dispatchEvent(new KeyboardEvent("keydown", { code: code }))
+        setTimeout(() => {
+            window.dispatchEvent(new KeyboardEvent("keyup", { code: code }))
+        }, 800)
+    }
+
+    return (
+        <div class="header__nav-container">
+            <button title="KeyA" onClick={() => onClick("KeyA")}>
+                ←
+            </button>
+            <button title="KeyD" onClick={() => onClick("KeyD")}>
+                →
+            </button>
+            <button title="ArrowUp" onClick={() => onClick("ArrowUp")}>
+                ↑
+            </button>
+            <button title="ArrowDown" onClick={() => onClick("ArrowDown")}>
+                ↓
+            </button>
+
+            <ToolTip>
+                <p>
+                    Select a graph above and use the arrow keys on the left to
+                    navigate the graph, or use keyboard shortcuts:
+                </p>
+                <ul>
+                    <li>A and D: left and right</li>
+                    <li>W and S: forward and backward</li>
+                    <li>R and F: up and down</li>
+                    <li>↑ and ↓: cycle through paths</li>
+                    <li>hover to select node</li>
+                </ul>
+            </ToolTip>
+        </div>
+    )
+}
+
 function StatusBar() {
     const { statusBarSignals } = usePGV()
     const [nodes, setNodes] = useState<number>()
@@ -99,23 +142,42 @@ function StatusBar() {
 
     return (
         <div class="header__status-bar">
-            {nodes !== undefined && <span>nodes: {nodes}</span>}
-            {edges !== undefined && <span>edges: {edges}</span>}
-            {region !== undefined && <span>region: {region}</span>}
+            {nodes !== undefined && (
+                <div class="header__status-bar__entry">
+                    nodes: <span>{nodes}</span>
+                </div>
+            )}
+            {edges !== undefined && (
+                <div class="header__status-bar__entry">
+                    edges: <span>{edges}</span>
+                </div>
+            )}
+            {region !== undefined && (
+                <div class="header__status-bar__entry">
+                    region: <span>{region}</span>
+                </div>
+            )}
             {paths !== undefined && (
-                <span>
-                    paths: {paths}
-                    {selectedPath !== undefined &&
-                        ` (selected: ${selectedPath[0]} - ${selectedPath[1]})`}
-                </span>
+                <div class="header__status-bar__entry">
+                    paths: <span>{paths}</span>{" "}
+                    {selectedPath !== undefined && (
+                        <>
+                            (selected:{" "}
+                            <span>
+                                {selectedPath[0]} - {selectedPath[1]}
+                            </span>
+                            )
+                        </>
+                    )}
+                </div>
             )}
 
             {selectedNode !== undefined && (
-                <span>
-                    node ID: {selectedNode[0]}, length:{" "}
-                    {format(selectedNode[1], "base")}, coverage:{" "}
-                    {selectedNode[2]}/{paths ?? "N/a"}
-                </span>
+                <div class="header__status-bar__entry">
+                    node ID: <span>{selectedNode[0]}</span>, length:{" "}
+                    <span>{format(selectedNode[1], "base")}</span>, coverage:{" "}
+                    <span>{selectedNode[2]}</span>/<span>{paths ?? "N/a"}</span>
+                </div>
             )}
         </div>
     )
@@ -126,30 +188,8 @@ export function Header() {
         <div class="header">
             <SelectDataSource />
             <SelectVgFile />
-
             <hr />
-
-            <div class="header__nav-container">
-                <button title="KeyA">←</button>
-                <button title="KeyD">→</button>
-                <button title="ArrowUp">↑</button>
-                <button title="ArrowDown">↓</button>
-
-                <ToolTip>
-                    <p>
-                        Select a graph above and use the arrow keys on the left
-                        to navigate the graph, or use keyboard shortcuts:
-                    </p>
-                    <ul>
-                        <li>A and D: left and right</li>
-                        <li>W and S: forward and backward</li>
-                        <li>R and F: up and down</li>
-                        <li>↑ and ↓: cycle through paths</li>
-                        <li>hover to select node</li>
-                    </ul>
-                </ToolTip>
-            </div>
-
+            <NavContainer />
             <StatusBar />
         </div>
     )
