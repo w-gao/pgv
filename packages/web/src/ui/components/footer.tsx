@@ -32,7 +32,7 @@ export function Footer() {
         const commit_ref = (env["COMMIT_REF"] as string) || "N/a"
         info = (
             <>
-                Current build: {branch}@{commit_ref.slice(0, 7)} ({build_date}).
+                Current build: {branch}@{commit_ref.slice(0, 7)} ({build_date})
             </>
         )
     } else {
