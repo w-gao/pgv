@@ -81,7 +81,7 @@ requirements:
 
 ```
 - Node.js >= 16
-- Yarn
+- Yarn < 2
 - Python >= 3.8
 ```
 
