@@ -1,0 +1,35 @@
+.footer {
+    padding: 12px 0;
+    background: #f6f6f6;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #9d9d9d;
+
+    > span {
+        &:not(:last-child)::after {
+            content: '-';
+            margin: 0 20px;
+            color: #929292;
+            
+            @media only screen and (max-width: 425px)  {
+                content: '';
+                margin: 0;
+
+                & {
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+        }    
+    }
+
+    &__link {
+        color: rgb(43, 101, 249);
+        text-decoration: none;
+
+        &:hover {
+            color: rgb(45, 137, 229);
+        }
+    }
+
+}

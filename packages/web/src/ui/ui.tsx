@@ -3,16 +3,12 @@ import { batch, signal, Signal } from "@preact/signals-core"
 import { Config } from "../config"
 import { PGV } from "../pgv"
 import { GraphDesc } from "../repo"
-import { Header, Tracks } from "./components"
+import { Header, Tracks, Footer } from "./components"
 import { ApplicationProvider, StatusBarUpdateSignals } from "./contexts"
 import "./style.css"
 
 function Settings() {
     return <div>settings</div>
-}
-
-function Footer() {
-    return <div>footer</div>
 }
 
 /**
