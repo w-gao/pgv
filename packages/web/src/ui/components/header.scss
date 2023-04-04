@@ -17,11 +17,16 @@
     }
 
     &__status-bar {
-        font-size: 12px;
+        display: flex;
+        flex-direction: row;
+        font-size: 14px;
 
         > span {
-            margin: 0;
-            font-weight: bold;
+            &:not(:last-child)::after {
+                content: '-';
+                margin: 0 8px;
+                color: #929292;
+              }
         }
     }
 }

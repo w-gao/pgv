@@ -29,7 +29,7 @@ export class ExampleDataRepo implements IRepo {
             const identifier = graph["identifier"]
             const name = graph["name"]
             const jsonFile = graph["jsonFile"]
-            const region = graph["region"]
+            const region = graph["region"] ?? undefined
 
             this.descs.set(identifier, {
                 identifier: identifier,

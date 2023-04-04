@@ -1,18 +1,11 @@
-import { UICallbacksFn, PGV } from "../pgv"
+import { PGV } from "../pgv"
 
 /**
  * @deprecated
  */
-export class Header implements UICallbacksFn {
+export class Header {
     private element: HTMLDivElement
     private statusBarElement: HTMLDivElement
-
-    private numNodes?: number
-    private numEdges?: number
-    private numPaths?: number
-    private selectedPath?: [number, string]
-    private region?: string
-    private selectedNode?: [string, number, number]
 
     constructor(private app: PGV, private parent: HTMLElement) {
         this.element = document.createElement("div")
@@ -84,98 +77,6 @@ export class Header implements UICallbacksFn {
             window.dispatchEvent(new KeyboardEvent("keyup", { code: code }))
         }, 800)
     }
-
-    // CallbacksFn ---
-
-    updateNodes(nodes: number | undefined, silent?: boolean): void {
-        this.numNodes = nodes
-        if (!silent) {
-            this.updateStatusBar()
-        }
-    }
-
-    updateEdges(edges: number | undefined, silent?: boolean): void {
-        this.numEdges = edges
-        if (!silent) {
-            this.updateStatusBar()
-        }
-    }
-
-    updatePaths(paths: number | undefined, silent?: boolean): void {
-        this.numPaths = paths
-        if (!silent) {
-            this.updateStatusBar()
-        }
-    }
-
-    updateSelectedPath(
-        path: [number, string] | undefined,
-        silent?: boolean
-    ): void {
-        this.selectedPath = path
-        if (!silent) {
-            this.updateStatusBar()
-        }
-    }
-
-    updateRegion(
-        region: string | undefined,
-        silent?: boolean | undefined
-    ): void {
-        this.region = region
-        if (!silent) {
-            this.updateStatusBar()
-        }
-    }
-
-    updateSelectedNode(
-        node: [string, number, number] | undefined,
-        silent?: boolean
-    ): void {
-        this.selectedNode = node
-        if (!silent) {
-            this.updateStatusBar()
-        }
-    }
-
-    updateStatusBar(): void {
-        const format = (count: number, item: string): string => {
-            return `${count} ${item}${count === 1 ? "" : "s"}`
-        }
-
-        let text = []
-
-        if (this.numNodes) {
-            text.push(`nodes: ${this.numNodes}`)
-        }
-        if (this.numEdges) {
-            text.push(`edges: ${this.numEdges}`)
-        }
-        if (this.region) {
-            text.push(`region: ${this.region}`)
-        }
-        if (this.numPaths) {
-            text.push(
-                `paths: ${this.numPaths}` +
-                    (this.selectedPath
-                        ? ` (selected: ${this.selectedPath[0]} - <span>${this.selectedPath[1]}</span>)`
-                        : "")
-            )
-        }
-
-        if (this.selectedNode) {
-            const [id, len, paths] = this.selectedNode
-            text.push(
-                `node ID: ${id}, length: ${format(
-                    len,
-                    "base"
-                )}, path freq: ${paths}/${this.numPaths}`
-            )
-        }
-
-        this.statusBarElement.innerHTML = text.join(" | ")
-    }
-    // ---
 
     show() {
         this.parent.appendChild(this.element)

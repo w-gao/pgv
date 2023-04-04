@@ -1,34 +1,36 @@
 import { ComponentChildren, createContext } from "preact"
 import { useContext } from "preact/hooks"
 import { Signal } from "@preact/signals-core"
-import { Config, PGV } from "../.."
+import { Config } from "../../config"
+import { PGV } from "../../pgv"
 import { GraphDesc } from "../../repo"
 
 /**
- * Object for a signal to update the status bar.
+ * Signals to update the status bar.
  *
  * If the property is...
  *  - a value, then the field is updated to the new value
- *  - undefined, then the field is left alone
- *  - null, then the field is cleared
+ *  - undefined, then the field is cleared
  */
-export interface StatusBarUpdate {
-    nodes?: number | null
-    edges?: number | null
-    paths?: number | null
-    region?: string | null
-    selectedPath?: [number, string] | null
-    selectedNode?: [string, number, number] | null
+export interface StatusBarUpdateSignals {
+    nodes: Signal<number | undefined>
+    edges: Signal<number | undefined>
+    paths: Signal<number | undefined>
+    region: Signal<string | undefined>
+    selectedPath: Signal<[number, string] | undefined>
+    selectedNode: Signal<[string, number, number] | undefined>
 }
 
 export interface AppState {
     app: PGV
     config: Config
 
+    // Headers
     graphsSignal: Signal<GraphDesc[]>
-    tracksSignal: Signal<Element | null>
+    statusBarSignals: StatusBarUpdateSignals
 
-    statusBarSignal: Signal<StatusBarUpdate>
+    // Tracks
+    tracksSignal: Signal<Element | null>
 }
 
 const ApplicationContext = createContext<AppState>({} as AppState)

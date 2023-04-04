@@ -7,33 +7,6 @@ import { UI } from "./ui"
 import { Header } from "./ui/deprecated"
 
 /**
- * Functional interface for UI callbacks.
- *
- * @deprecated
- */
-export interface UICallbacksFn {
-    // Status bar related.
-    updateNodes(nodes: number | undefined, silent?: boolean): void
-    updateEdges(edges: number | undefined, silent?: boolean): void
-    updatePaths(paths: number | undefined, silent?: boolean): void
-    updateSelectedPath(
-        // [index, name]
-        path: [number, string] | undefined,
-        silent?: boolean
-    ): void
-    updateRegion(region: string | undefined, silent?: boolean): void
-
-    updateSelectedNode(
-        // [nodeID, seqLen, numPaths]
-        node: [string, number, number] | undefined,
-        silent?: boolean
-    ): void
-
-    // Force update.
-    updateStatusBar(): void
-}
-
-/**
  * Represents an instance of the PGV app.
  */
 export class PGV {
@@ -83,10 +56,7 @@ export class PGV {
 
         // For now, config.layout === "tubemap" and config.renderer === "three".
         this.layout = new TubeMapLayout(this.ui)
-        this.renderer = new ThreeRenderer(
-            this.ui,
-            this.headerUI as UICallbacksFn
-        )
+        this.renderer = new ThreeRenderer(this.ui)
 
         // TODO: we ought show spinner and hide UI when this is loading, but this is fairly quick at the moment.
         if (this.renderer instanceof ThreeRenderer) {
@@ -122,7 +92,7 @@ export class PGV {
         // Clear whatever we might have.
         this.renderer.clear()
 
-        this.headerUI.updateRegion(desc.region)
+        this.ui.updateRegion(desc.region)
 
         // Apply the layout.
         const g = this.layout.apply(graph)

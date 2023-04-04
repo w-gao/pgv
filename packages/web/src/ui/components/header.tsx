@@ -77,6 +77,50 @@ function SelectVgFile() {
     )
 }
 
+function StatusBar() {
+    const { statusBarSignals } = usePGV()
+    const [nodes, setNodes] = useState<number>()
+    const [edges, setEdges] = useState<number>()
+    const [paths, setPaths] = useState<number>()
+    const [region, setRegion] = useState<string>()
+    const [selectedPath, setSelectedPath] = useState<[number, string]>()
+    const [selectedNode, setSelectedNode] = useState<[string, number, number]>()
+
+    effect(() => setNodes(statusBarSignals.nodes.value))
+    effect(() => setEdges(statusBarSignals.edges.value))
+    effect(() => setPaths(statusBarSignals.paths.value))
+    effect(() => setRegion(statusBarSignals.region.value))
+    effect(() => setSelectedPath(statusBarSignals.selectedPath.value))
+    effect(() => setSelectedNode(statusBarSignals.selectedNode.value))
+
+    const format = (count: number, item: string): string => {
+        return `${count} ${item}${count === 1 ? "" : "s"}`
+    }
+
+    return (
+        <div class="header__status-bar">
+            {nodes !== undefined && <span>nodes: {nodes}</span>}
+            {edges !== undefined && <span>edges: {edges}</span>}
+            {region !== undefined && <span>region: {region}</span>}
+            {paths !== undefined && (
+                <span>
+                    paths: {paths}
+                    {selectedPath !== undefined &&
+                        ` (selected: ${selectedPath[0]} - ${selectedPath[1]})`}
+                </span>
+            )}
+
+            {selectedNode !== undefined && (
+                <span>
+                    node ID: {selectedNode[0]}, length:{" "}
+                    {format(selectedNode[1], "base")}, coverage:{" "}
+                    {selectedNode[2]}/{paths ?? "N/a"}
+                </span>
+            )}
+        </div>
+    )
+}
+
 export function Header() {
     return (
         <div class="header">
@@ -106,7 +150,7 @@ export function Header() {
                 </ToolTip>
             </div>
 
-            <div class="header__status-bar">{/* To be populated... */}</div>
+            <StatusBar />
         </div>
     )
 }
