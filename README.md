@@ -96,7 +96,7 @@ Then, build the project:
 
 ```console
 # Run the prebuild script.
-# Note: this requires curl and ed, which might not be available on Windows.
+# Note: this script requires curl.
 ./prebuild.sh
 
 # Build core package.
