@@ -36,6 +36,3 @@ jobs:
       - uses: rossjrw/pr-preview-action@v1
         with:
           source-dir: ./packages/web/dist
-          preview-branch: main
-          umbrella-dir: pr-preview
-          action: auto
