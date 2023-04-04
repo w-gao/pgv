@@ -1,18 +1,22 @@
 .header {
-    margin: 0;
-    padding: 0 8px;
+    padding: 8px;
     border: 1px #929292 solid;
     background: #f6f6f6;
 
+    &__container {
+        display: flex;
+        flex-flow: row wrap;
+        gap: 8px;
+    }
+
     &__nav-container {
         display: flex;
-        gap: 10px;
-        margin-bottom: 8px;
+        gap: 8px;
 
         > button {
             cursor: pointer;
             padding: 2px 5px;
-            width: 35px;
+            width: 45px;
         }
     }
 
@@ -20,6 +24,7 @@
         display: flex;
         flex-flow: row wrap;
         font-size: 14px;
+        margin-top: 8px;
 
         &__entry {
             > span {

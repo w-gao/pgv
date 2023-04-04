@@ -140,6 +140,10 @@ function StatusBar() {
         return `${count} ${item}${count === 1 ? "" : "s"}`
     }
 
+    if (nodes === undefined && edges === undefined && paths === undefined) {
+        return <></>
+    }
+
     return (
         <div class="header__status-bar">
             {nodes !== undefined && (
@@ -186,8 +190,10 @@ function StatusBar() {
 export function Header() {
     return (
         <div class="header">
-            <SelectDataSource />
-            <SelectVgFile />
+            <div class="header__container">
+                <SelectDataSource />
+                <SelectVgFile />
+            </div>
             <hr />
             <NavContainer />
             <StatusBar />
