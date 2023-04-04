@@ -29,7 +29,7 @@ export function Footer() {
     if (env) {
         const build_date = env["BUILD_DATE"] || "N/a"
         const branch = env["BRANCH"] || "dev"
-        const commit_ref = (env["GITHUB_WORKFLOW_SHA"] as string) || "N/a"
+        const commit_ref = (env["COMMIT_REF"] as string) || "N/a"
         info = (
             <>
                 Current build: {branch}@{commit_ref.slice(0, 7)} ({build_date}).
