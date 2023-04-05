@@ -87,6 +87,7 @@ export class PGV {
         // Clear whatever we might have.
         this._renderer.clear()
 
+        // Show the selected region on the UI.
         this._ui.updateRegion(desc.region)
 
         // Apply the layout.

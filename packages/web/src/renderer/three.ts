@@ -101,7 +101,6 @@ export class ThreeRenderer implements IRenderer {
         this.renderer.shadowMap.enabled = true
 
         this.element = this.renderer.domElement
-        this.element.setAttribute("class", "renderCanvas")
 
         // Add canvas element to container.
         divElement.appendChild(this.element)

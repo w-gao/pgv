@@ -1,4 +1,5 @@
 import { PGV } from "./pgv"
+import "./main.scss"
 
 /**
  * Main entry.

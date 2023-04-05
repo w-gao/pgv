@@ -31,7 +31,7 @@ export interface Track {
 /**
  * The user interface.
  *
- * Use the method calls to update the values on the UI.
+ * Use the method calls to update what is shown on the UI.
  *
  * Register events to handle user input from the UI. (WIP)
  *
