@@ -7,10 +7,6 @@ import { Header, Tracks, Footer } from "./components"
 import { ApplicationProvider, StatusBarUpdateSignals } from "./contexts"
 import "./style.css"
 
-function Settings() {
-    return <div>settings</div>
-}
-
 /**
  * Represents a "track" that can be displayed in the UI.
  */
@@ -69,7 +65,6 @@ export class UI {
             >
                 <Header />
                 <Tracks />
-                <Settings />
                 <Footer />
             </ApplicationProvider>,
             root
